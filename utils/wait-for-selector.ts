@@ -3,25 +3,15 @@ export default function waitForSelector(
 	timeout?: string | number,
 	_timeout?: number,
 ): Promise<Element | null> {
-	let element;
-
-	if (typeof selector === "string") {
-		element = document.querySelector(selector);
-	} else if (typeof timeout === "string") {
-		element = selector.querySelector(timeout);
-		timeout = _timeout;
-	}
-
-	if (element) return Promise.resolve(element);
-
 	return new Promise((resolve) => {
+		let element: Element | null = null;
 		let timer = 0;
-		const intervalId = setInterval(() => {
-			timer += 100;
+
+		const checkSelector = () => {
 			if (typeof selector === "string") {
 				element = document.querySelector(selector);
-			} else if (typeof timeout === "string") {
-				element = selector.querySelector(timeout);
+			} else {
+				element = selector;
 			}
 
 			if (element) {
@@ -31,6 +21,13 @@ export default function waitForSelector(
 				clearInterval(intervalId);
 				resolve(null);
 			}
+		};
+
+		checkSelector();
+
+		const intervalId = setInterval(() => {
+			timer += 100;
+			checkSelector();
 		}, 100);
 	});
 }
