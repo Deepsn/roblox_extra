@@ -1,4 +1,4 @@
-import { constructorHooks } from "@/utils/react/hooks";
+import type { ConstructorHook, ReactProps } from "@/utils/react/types/hook";
 import type React from "react";
 
 type OnCreateElementProps = [
@@ -16,7 +16,7 @@ export function onCreateElement([
 	if (props?.internal !== undefined) return;
 
 	if (typeof type === "function") {
-		const hooks = constructorHooks.filter((hook) =>
+		const hooks = RobloxExtra.ReactRegistry.ConstructorsHooks.filter((hook) =>
 			hook.filter(props, type, ...children),
 		);
 

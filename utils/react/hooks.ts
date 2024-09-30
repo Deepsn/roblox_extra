@@ -1,6 +1,5 @@
+import { hookFunction } from "@/utils/hook-function";
 import { onCreateElement } from "@/utils/react/on-create-element";
-
-export const constructorHooks = [] as ConstructorHook[];
 
 export function hookReact() {
 	hookFunction(React, "createElement", (createElement, react, args) => {

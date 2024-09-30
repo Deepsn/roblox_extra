@@ -22,6 +22,12 @@
     "spawn-sync"
   ],
   "devdependencies": {
-    "@biomejs/biome": "^1.9.2"
+    "@biomejs/biome": "^1.9.2",
+    "@types/react": "^18.3.10",
+    "@types/react-dom": "^18.3.0"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }

@@ -1,3 +1,6 @@
+import type React from "react";
+import type { Attributes } from "react";
+
 type ReactProps<P extends {}> = (Attributes & P) | null;
 
 interface ConstructorHook {
@@ -7,7 +10,8 @@ interface ConstructorHook {
 		...children: React.ReactNode[]
 	) => boolean;
 	callback: (
-		...args: any[]
+		originalElement: React.ReactElement,
+		props: ReactProps<{ [key: string | unknown]: unknown }>,
 	) => React.ReactElement | undefined | unknown | undefined;
 	manipulateResult?: boolean;
 }

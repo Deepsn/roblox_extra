@@ -1,4 +1,4 @@
-import { constructorHooks } from "@/utils/react/hooks";
+import type { ConstructorHook } from "@/utils/react/types/hook";
 
 interface AdvancedFilter {
 	allow: string[];
@@ -14,7 +14,7 @@ export function hookConstructor(
 
 	if (Array.isArray(filterSettings)) {
 		filter = (props) =>
-			filterSettings.find((obj) => props[obj] === undefined) === undefined;
+			filterSettings.find((obj) => props?.[obj] === undefined) === undefined;
 	}
 
 	if (
@@ -25,7 +25,7 @@ export function hookConstructor(
 		filter = (props) => {
 			if (filterSettings.allow) {
 				if (
-					filterSettings.allow.find((obj) => props[obj] === undefined) !==
+					filterSettings.allow.find((obj) => props?.[obj] === undefined) !==
 					undefined
 				) {
 					return false;
@@ -34,7 +34,7 @@ export function hookConstructor(
 
 			if (filterSettings.deny) {
 				if (
-					filterSettings.deny.find((obj) => props[obj] !== undefined) !==
+					filterSettings.deny.find((obj) => props?.[obj] !== undefined) !==
 					undefined
 				) {
 					return false;
@@ -45,9 +45,13 @@ export function hookConstructor(
 		};
 	}
 
+	if (!filter && typeof filterSettings !== "object") {
+		filter = filterSettings;
+	}
+
 	if (!filter) return;
 
-	constructorHooks.push({
+	RobloxExtra.ReactRegistry.ConstructorsHooks.push({
 		filter,
 		callback,
 		manipulateResult,

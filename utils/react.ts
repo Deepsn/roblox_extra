@@ -1,5 +1,5 @@
 import { onCreateElement, constructorHooks } from "@/routes/hooks/react";
-import hookFunction from "./hookFunction";
+import hookFunction from "./hook-function";
 
 // Hook react function
 
