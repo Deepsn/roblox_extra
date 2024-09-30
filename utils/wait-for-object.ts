@@ -7,14 +7,11 @@ export function waitForObject<T, K extends keyof T>(
 			return resolve(object[objectName]);
 		}
 
-		Object.defineProperty(object, objectName, {
-			configurable: true,
-			enumerable: false,
-			set(newValue) {
-				delete object[objectName];
-				object[objectName] = newValue;
-				resolve(newValue);
-			},
-		});
+		const watcher = setInterval(() => {
+			if (object[objectName]) {
+				clearInterval(watcher);
+				resolve(object[objectName]);
+			}
+		}, 100);
 	});
 }
