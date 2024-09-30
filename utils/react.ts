@@ -2,58 +2,6 @@ import { onCreateElement, constructorHooks } from "@/routes/hooks/react";
 import hookFunction from "./hookFunction";
 
 // Hook react function
-export default function hookReact() {
-	hookFunction(React, "createElement", (createElement, react, args) => {
-		try {
-			args = onCreateElement(args) ?? args;
-		} catch (error) {
-			console.warn("createElement hook:", error);
-		}
-
-		return Reflect.apply(createElement, react, args);
-	});
-}
-
-export function hookConstructor(
-	filter: IConstructorHook["filter"] | IAdvancedFilter | string[],
-	callback: IConstructorHook["callback"],
-	manipulateResult?: IConstructorHook["manipulateResult"],
-) {
-	if (Array.isArray(filter)) {
-		const filterArray = filter;
-		filter = (props) =>
-			filterArray.find((obj) => props[obj] == undefined) == undefined;
-	}
-
-	if (typeof filter === "object") {
-		const filterObject = filter as IAdvancedFilter;
-		filter = (props) => {
-			if (filterObject.allow) {
-				if (
-					filterObject.allow.find((obj) => props[obj] == undefined) != undefined
-				) {
-					return false;
-				}
-			}
-
-			if (filterObject.deny) {
-				if (
-					filterObject.deny.find((obj) => props[obj] != undefined) != undefined
-				) {
-					return false;
-				}
-			}
-
-			return true;
-		};
-	}
-
-	constructorHooks.push({
-		filter,
-		callback,
-		manipulateResult,
-	});
-}
 
 export function QueryElement(
 	element: React.ReactElement,
