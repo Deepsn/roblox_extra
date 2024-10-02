@@ -6,11 +6,11 @@ export function hookReact() {
 		let modifiedArgs: typeof args;
 
 		try {
-			modifiedArgs = onCreateElement(args);
-		} catch (error) {
-			console.warn("createElement hook:", error);
+			modifiedArgs = onCreateElement(args) ?? args;
+		} catch (err) {
+			console.warn('Hook "createElement" failure', err);
 		}
 
-		return Reflect.apply(createElement, react, modifiedArgs ?? args);
+		return Reflect.apply(createElement, react, modifiedArgs);
 	});
 }
