@@ -7,6 +7,9 @@ export declare global {
 	};
 	const RobloxExtra: RobloxExtra;
 	const useEffect: typeof import("react").useEffect;
+	const useLayoutEffect: typeof import("react").useLayoutEffect;
+	const useState: typeof import("react").useState;
+	const useCallback: typeof import("react").useCallback;
 
 	interface Window {
 		RobloxThumbnails: RobloxThumbnails;
@@ -15,6 +18,9 @@ export declare global {
 		React: typeof import("react");
 		ReactDOM: typeof import("react-dom");
 		useEffect: typeof import("react").useEffect;
+		useLayoutEffect: typeof import("react").useLayoutEffect;
+		useState: typeof import("react").useState;
+		useCallback: typeof import("react").useCallback;
 	}
 
 	interface RobloxExtra {
