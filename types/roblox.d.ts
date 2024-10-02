@@ -9,12 +9,14 @@ interface Roblox {
 		commas: (n: number) => string;
 	};
 	EnvironmentUrls: {
-		[key: string]:
-			| `${string}Api`
-			| `${string}Link`
-			| `${string}ApiSite`
-			| `${string}Url`
-			| "domain";
+		[
+			key:
+				| `${string}Api`
+				| `${string}Link`
+				| `${string}ApiSite`
+				| `${string}Url`
+				| "domain"
+		]: string;
 	};
 	GameDetail: {
 		UniverseId: number;
