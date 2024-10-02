@@ -1,10 +1,10 @@
 import type { ConstructorHook, ReactProps } from "@/utils/react/types/hook";
-import type React from "react";
+import type { ReactNode } from "react";
 
 type OnCreateElementProps = [
 	string | ConstructorHook["callback"],
 	ReactProps<{ [key: string]: unknown }>,
-	React.ReactNode[],
+	ReactNode[],
 ];
 
 export function onCreateElement([
@@ -24,7 +24,7 @@ export function onCreateElement([
 			for (const hook of hooks) {
 				type = new Proxy(type, {
 					apply: (target, self, args) => {
-						let result = [target, self];
+						let result = [target, self, args];
 
 						if (!hook.manipulateResult) {
 							result = [Reflect.apply(target, self, args)];
