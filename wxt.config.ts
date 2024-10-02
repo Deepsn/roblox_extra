@@ -3,7 +3,7 @@ import { defineConfig } from "wxt";
 
 const routes = readdirSync("./entrypoints/")
 	.filter((route) => route.includes("route-"))
-	.map((route) => route.replace(".ts", ".js"));
+	.map((route) => route.replace(".ts", ".js").replace("jsx", "js"));
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
