@@ -24,7 +24,7 @@ export function onCreateElement([
 			for (const hook of hooks) {
 				type = new Proxy(type, {
 					apply: (target, self, args) => {
-						let result = [target, self, args];
+						let result = [target, self];
 
 						if (!hook.manipulateResult) {
 							result = [Reflect.apply(target, self, args)];

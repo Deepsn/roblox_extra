@@ -27,6 +27,7 @@
     "@types/react-dom": "^18.3.0"
   },
   "dependencies": {
+    "@webext-core/messaging": "^1.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   }
