@@ -1,4 +1,5 @@
 import { onMessage } from "@/utils/messaging";
+import { getServerRegion } from "@/utils/server/get-server-region";
 
 let userAgentTimeout: NodeJS.Timeout | undefined;
 
@@ -64,26 +65,7 @@ export default defineBackground(() => {
 
 		const json = await response.json();
 		const address = json?.joinScript?.UdmuxEndpoints?.[0]?.Address;
-
-		let region = {
-			country: "Unknown",
-			countryCode: "N/A",
-			location: "Unknown",
-		};
-
-		if (address) {
-			const regionResponse = await fetch(`http://ip-api.com/json/${address}`)
-				.then((res) => res.json())
-				.catch(() => undefined);
-
-			if (regionResponse?.status === "success") {
-				region = {
-					country: regionResponse.country,
-					countryCode: regionResponse.countryCode,
-					location: regionResponse.regionName,
-				};
-			}
-		}
+		const region = await getServerRegion(address);
 
 		return {
 			ip: address,

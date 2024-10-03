@@ -10,7 +10,6 @@ export const GameInstanceCard: ConstructorHook["callback"] = (
 ) => {
 	const [props] = args;
 	const update = useUpdate();
-	// https://gamejoin.roblox.com/
 
 	useAsyncEffect(async () => {
 		const serverInfo = await sendMessagesOnInjected("getServerInfo", {
@@ -21,7 +20,7 @@ export const GameInstanceCard: ConstructorHook["callback"] = (
 		console.log("Server info", serverInfo);
 		if (!serverInfo) return;
 
-		props.gameServerStatus = `region: ${serverInfo.region.location} - ${serverInfo.region.countryCode}\nip: ${serverInfo.ip}`;
+		props.gameServerStatus = `region: ${serverInfo.region.location} - ${serverInfo.region.country}`;
 		update();
 	}, []);
 	// console.log(props);

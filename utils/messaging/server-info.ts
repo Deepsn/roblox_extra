@@ -2,7 +2,6 @@ interface ServerInfo {
 	ip: string;
 	region: {
 		country: string;
-		countryCode: string;
 		location: string;
 	};
 }

@@ -1,0 +1,370 @@
+{
+    "128.116.1.0": {
+        "country_code": "US",
+        "region_name": "California"
+    },
+    "128.116.12.0": {
+        "country_code": "US",
+        "region_name": "California"
+    },
+    "128.116.49.0": {
+        "country_code": "US",
+        "region_name": "California"
+    },
+    "128.116.57.0": {
+        "country_code": "US",
+        "region_name": "California"
+    },
+    "128.116.63.0": {
+        "country_code": "US",
+        "region_name": "California"
+    },
+    "128.116.64.0": {
+        "country_code": "US",
+        "region_name": "California"
+    },
+    "128.116.67.0": {
+        "country_code": "US",
+        "region_name": "California"
+    },
+    "128.116.68.0": {
+        "country_code": "US",
+        "region_name": "California"
+    },
+    "128.116.69.0": {
+        "country_code": "US",
+        "region_name": "California"
+    },
+    "128.116.81.0": {
+        "country_code": "US",
+        "region_name": "California"
+    },
+    "128.116.86.0": {
+        "country_code": "US",
+        "region_name": "California"
+    },
+    "128.116.90.0": {
+        "country_code": "US",
+        "region_name": "California"
+    },
+    "128.116.91.0": {
+        "country_code": "US",
+        "region_name": "California"
+    },
+    "128.116.92.0": {
+        "country_code": "US",
+        "region_name": "California"
+    },
+    "128.116.93.0": {
+        "country_code": "US",
+        "region_name": "California"
+    },
+    "128.116.10.0": {
+        "country_code": "US",
+        "region_name": "Virginia"
+    },
+    "128.116.11.0": {
+        "country_code": "US",
+        "region_name": "Virginia"
+    },
+    "128.116.52.0": {
+        "country_code": "US",
+        "region_name": "Virginia"
+    },
+    "128.116.53.0": {
+        "country_code": "US",
+        "region_name": "Virginia"
+    },
+    "128.116.56.0": {
+        "country_code": "US",
+        "region_name": "Virginia"
+    },
+    "128.116.70.0": {
+        "country_code": "US",
+        "region_name": "Virginia"
+    },
+    "128.116.71.0": {
+        "country_code": "US",
+        "region_name": "Virginia"
+    },
+    "128.116.74.0": {
+        "country_code": "US",
+        "region_name": "Virginia"
+    },
+    "128.116.75.0": {
+        "country_code": "US",
+        "region_name": "Virginia"
+    },
+    "128.116.76.0": {
+        "country_code": "US",
+        "region_name": "Virginia"
+    },
+    "128.116.77.0": {
+        "country_code": "US",
+        "region_name": "Virginia"
+    },
+    "128.116.78.0": {
+        "country_code": "US",
+        "region_name": "Virginia"
+    },
+    "128.116.87.0": {
+        "country_code": "US",
+        "region_name": "Virginia"
+    },
+    "128.116.15.0": {
+        "country_code": "US",
+        "region_name": "New Jersey"
+    },
+    "128.116.16.0": {
+        "country_code": "US",
+        "region_name": "New Jersey"
+    },
+    "128.116.17.0": {
+        "country_code": "US",
+        "region_name": "New Jersey"
+    },
+    "128.116.23.0": {
+        "country_code": "US",
+        "region_name": "New Jersey"
+    },
+    "128.116.32.0": {
+        "country_code": "US",
+        "region_name": "New Jersey"
+    },
+    "128.116.65.0": {
+        "country_code": "US",
+        "region_name": "New Jersey"
+    },
+    "128.116.66.0": {
+        "country_code": "US",
+        "region_name": "New Jersey"
+    },
+    "128.116.27.0": {
+        "country_code": "US",
+        "region_name": "Illinois"
+    },
+    "128.116.28.0": {
+        "country_code": "US",
+        "region_name": "Illinois"
+    },
+    "128.116.29.0": {
+        "country_code": "US",
+        "region_name": "Illinois"
+    },
+    "128.116.46.0": {
+        "country_code": "US",
+        "region_name": "Illinois"
+    },
+    "128.116.47.0": {
+        "country_code": "US",
+        "region_name": "Illinois"
+    },
+    "128.116.48.0": {
+        "country_code": "US",
+        "region_name": "Illinois"
+    },
+    "128.116.84.0": {
+        "country_code": "US",
+        "region_name": "Illinois"
+    },
+    "128.116.88.0": {
+        "country_code": "US",
+        "region_name": "Illinois"
+    },
+    "128.116.18.0": {
+        "country_code": "US",
+        "region_name": "Florida"
+    },
+    "128.116.37.0": {
+        "country_code": "US",
+        "region_name": "Florida"
+    },
+    "128.116.38.0": {
+        "country_code": "US",
+        "region_name": "Florida"
+    },
+    "128.116.45.0": {
+        "country_code": "US",
+        "region_name": "Florida"
+    },
+    "128.116.85.0": {
+        "country_code": "US",
+        "region_name": "Florida"
+    },
+    "128.116.127.0": {
+        "country_code": "US",
+        "region_name": "Florida"
+    },
+    "128.116.22.0": {
+        "country_code": "US",
+        "region_name": "Georgia"
+    },
+    "128.116.24.0": {
+        "country_code": "US",
+        "region_name": "Georgia"
+    },
+    "128.116.25.0": {
+        "country_code": "US",
+        "region_name": "Georgia"
+    },
+    "128.116.62.0": {
+        "country_code": "US",
+        "region_name": "Washington"
+    },
+    "128.116.0.0": {
+        "country_code": "HK",
+        "region_name": "Hong Kong"
+    },
+    "128.116.14.0": {
+        "country_code": "HK",
+        "region_name": "Hong Kong"
+    },
+    "128.116.30.0": {
+        "country_code": "HK",
+        "region_name": "Hong Kong"
+    },
+    "128.116.2.0": {
+        "country_code": "PL",
+        "region_name": "Mazowieckie"
+    },
+    "128.116.3.0": {
+        "country_code": "PL",
+        "region_name": "Mazowieckie"
+    },
+    "128.116.31.0": {
+        "country_code": "PL",
+        "region_name": "Mazowieckie"
+    },
+    "128.116.4.0": {
+        "country_code": "FR",
+        "region_name": "Île-de-France"
+    },
+    "128.116.19.0": {
+        "country_code": "FR",
+        "region_name": "Île-de-France"
+    },
+    "128.116.20.0": {
+        "country_code": "FR",
+        "region_name": "Île-de-France"
+    },
+    "128.116.26.0": {
+        "country_code": "FR",
+        "region_name": "Île-de-France"
+    },
+    "128.116.5.0": {
+        "country_code": "DE",
+        "region_name": "Hessen"
+    },
+    "128.116.8.0": {
+        "country_code": "DE",
+        "region_name": "Hessen"
+    },
+    "128.116.39.0": {
+        "country_code": "DE",
+        "region_name": "Hessen"
+    },
+    "128.116.40.0": {
+        "country_code": "DE",
+        "region_name": "Hessen"
+    },
+    "128.116.41.0": {
+        "country_code": "DE",
+        "region_name": "Hessen"
+    },
+    "128.116.42.0": {
+        "country_code": "DE",
+        "region_name": "Hessen"
+    },
+    "128.116.43.0": {
+        "country_code": "DE",
+        "region_name": "Hessen"
+    },
+    "128.116.44.0": {
+        "country_code": "DE",
+        "region_name": "Hessen"
+    },
+    "128.116.6.0": {
+        "country_code": "JP",
+        "region_name": "Tokyo"
+    },
+    "128.116.55.0": {
+        "country_code": "JP",
+        "region_name": "Tokyo"
+    },
+    "128.116.58.0": {
+        "country_code": "JP",
+        "region_name": "Tokyo"
+    },
+    "128.116.59.0": {
+        "country_code": "JP",
+        "region_name": "Tokyo"
+    },
+    "128.116.60.0": {
+        "country_code": "JP",
+        "region_name": "Tokyo"
+    },
+    "128.116.82.0": {
+        "country_code": "JP",
+        "region_name": "Tokyo"
+    },
+    "128.116.83.0": {
+        "country_code": "JP",
+        "region_name": "Tokyo"
+    },
+    "128.116.7.0": {
+        "country_code": "IN",
+        "region_name": "Mahārāshtra"
+    },
+    "128.116.9.0": {
+        "country_code": "IN",
+        "region_name": "Mahārāshtra"
+    },
+    "128.116.13.0": {
+        "country_code": "NL",
+        "region_name": "Noord-Holland"
+    },
+    "128.116.21.0": {
+        "country_code": "NL",
+        "region_name": "Noord-Holland"
+    },
+    "128.116.54.0": {
+        "country_code": "NL",
+        "region_name": "Noord-Holland"
+    },
+    "128.116.33.0": {
+        "country_code": "GB",
+        "region_name": "England"
+    },
+    "128.116.35.0": {
+        "country_code": "GB",
+        "region_name": "England"
+    },
+    "128.116.36.0": {
+        "country_code": "GB",
+        "region_name": "England"
+    },
+    "128.116.72.0": {
+        "country_code": "GB",
+        "region_name": "England"
+    },
+    "128.116.73.0": {
+        "country_code": "GB",
+        "region_name": "England"
+    },
+    "128.116.89.0": {
+        "country_code": "GB",
+        "region_name": "England"
+    },
+    "128.116.50.0": {
+        "country_code": "SG",
+        "region_name": "Singapore"
+    },
+    "128.116.79.0": {
+        "country_code": "SG",
+        "region_name": "Singapore"
+    },
+    "128.116.51.0": {
+        "country_code": "AU",
+        "region_name": "New South Wales"
+    }
+}
