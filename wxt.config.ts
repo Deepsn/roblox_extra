@@ -7,6 +7,13 @@ const routes = readdirSync("./entrypoints/")
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
+	hooks: {
+		"build:manifestGenerated": (wxt, manifest) => {
+			if (wxt.config.mode === "development") {
+				manifest.name += " (DEV)";
+			}
+		},
+	},
 	manifest: () => {
 		return {
 			web_accessible_resources: [
