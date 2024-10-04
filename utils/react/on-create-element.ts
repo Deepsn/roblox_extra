@@ -15,6 +15,20 @@ export function onCreateElement([
 	if (!(props instanceof Object)) return;
 	if (props?.internal !== undefined) return;
 
+	let render: typeof type;
+
+	if (typeof type === "function") {
+		render = type;
+	} else if (typeof type === "object") {
+		const component = type as object;
+
+		if ("render" in component && typeof component.render === "function") {
+			render = component.render as (...args: any[]) => unknown;
+		} else if ("type" in component && typeof component.type === "function") {
+			render = component.type as (...args: any[]) => unknown;
+		}
+	}
+
 	if (typeof type === "function") {
 		const hooks = RobloxExtra.ReactRegistry.ConstructorsHooks.filter((hook) =>
 			hook.filter(props, type, ...children),
