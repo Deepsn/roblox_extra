@@ -15,7 +15,7 @@ export function onCreateElement([
 	if (!(props instanceof Object)) return;
 	if (props?.internal !== undefined) return;
 
-	let render: typeof type;
+	let render: typeof type | undefined = undefined;
 
 	if (typeof type === "function") {
 		render = type;
@@ -29,14 +29,14 @@ export function onCreateElement([
 		}
 	}
 
-	if (typeof type === "function") {
+	if (typeof render === "function") {
 		const hooks = RobloxExtra.ReactRegistry.ConstructorsHooks.filter((hook) =>
 			hook.filter(props, type, ...children),
 		);
 
 		if (hooks.length > 0) {
 			for (const hook of hooks) {
-				type = new Proxy(type, {
+				render = new Proxy(render, {
 					apply: (target, self, args) => {
 						let result = [target, self];
 
