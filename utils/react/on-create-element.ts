@@ -15,7 +15,7 @@ export function onCreateElement([
 	if (!(props instanceof Object)) return;
 	if (props?.internal !== undefined) return;
 
-	let render: typeof type | undefined = undefined;
+	let render = type;
 
 	if (typeof type === "function") {
 		render = type;
@@ -31,7 +31,7 @@ export function onCreateElement([
 
 	if (typeof render === "function") {
 		const hooks = RobloxExtra.ReactRegistry.ConstructorsHooks.filter((hook) =>
-			hook.filter(props, type, ...children),
+			hook.filter(props, render, ...children),
 		);
 
 		if (hooks.length > 0) {
@@ -51,5 +51,5 @@ export function onCreateElement([
 		}
 	}
 
-	return [type, props, ...children];
+	return [render, props, ...children];
 }
