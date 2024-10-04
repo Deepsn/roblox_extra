@@ -59,6 +59,10 @@
         "country_code": "US",
         "region_name": "California"
     },
+    "128.116.95.0": {
+        "country_code": "US",
+        "region_name": "Texas"
+    },
     "128.116.10.0": {
         "country_code": "US",
         "region_name": "Virginia"
@@ -319,6 +323,10 @@
         "country_code": "IN",
         "region_name": "Mahārāshtra"
     },
+    "128.116.104.0": {
+        "country_code": "IN",
+        "region_name": "Mahārāshtra"
+    },
     "128.116.13.0": {
         "country_code": "NL",
         "region_name": "Noord-Holland"
@@ -363,8 +371,16 @@
         "country_code": "SG",
         "region_name": "Singapore"
     },
+    "128.116.97.0": {
+        "country_code": "SG",
+        "region_name": "Singapore"
+    },
     "128.116.51.0": {
         "country_code": "AU",
         "region_name": "New South Wales"
+    },
+    "18.228.238.0": {
+        "country_code": "BR",
+        "region_name": "São Paulo"
     }
 }
