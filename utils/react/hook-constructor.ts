@@ -52,6 +52,7 @@ export function hookConstructor(
 	if (!filter) return;
 
 	RobloxExtra.ReactRegistry.ConstructorsHooks.push({
+		index: RobloxExtra.ReactRegistry.ConstructorsHooks.length,
 		filter,
 		callback,
 		manipulateResult,

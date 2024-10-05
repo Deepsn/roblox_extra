@@ -1,21 +1,19 @@
-import type { ConstructorHook, ReactProps } from "@/utils/react/types/hook";
-import type { ReactNode } from "react";
+import type { ReactProps } from "@/utils/react/types/hook";
+import type { JSXElementConstructor, ReactElement } from "react";
 
-type OnCreateElementProps = [
-	string | ConstructorHook["callback"],
-	ReactProps<{ [key: string]: unknown }>,
-	ReactNode[],
-];
+const constructorProxies = new Map<any, { [key: string]: any }>();
 
-export function onCreateElement([
-	type,
-	props,
-	...children
-]: OnCreateElementProps) {
+export function onCreateElement(
+	type: string | JSXElementConstructor<any>,
+	props: ReactProps<{ [key: string]: unknown }>,
+) {
 	if (!(props instanceof Object)) return;
 	if (props?.internal !== undefined) return;
 
-	let render = type;
+	let render:
+		| ((...args: any[]) => ReactElement | unknown)
+		| JSXElementConstructor<any>
+		| undefined = undefined;
 
 	if (typeof type === "function") {
 		render = type;
@@ -29,27 +27,41 @@ export function onCreateElement([
 		}
 	}
 
-	if (typeof render === "function") {
-		const hooks = RobloxExtra.ReactRegistry.ConstructorsHooks.filter((hook) =>
-			hook.filter(props, render, ...children),
-		);
+	if (!render) return;
 
-		if (hooks.length > 0) {
-			for (const hook of hooks) {
-				render = new Proxy(render, {
-					apply: (target, self, args) => {
-						let result = [target, self];
+	const hooks = RobloxExtra.ReactRegistry.ConstructorsHooks.filter((hook) =>
+		hook.filter(props, render),
+	);
 
-						if (!hook.manipulateResult) {
-							result = [Reflect.apply(target, self, args)];
-						}
+	let cache = constructorProxies.get(type);
 
-						return hook.callback(...result, args) ?? result;
-					},
-				});
-			}
-		}
+	if (!cache) {
+		cache = {};
+		constructorProxies.set(type, cache);
 	}
 
-	return [render, props, ...children];
+	const key = hooks.map((x) => x.index).join("");
+	let proxy = cache[key];
+
+	if (!proxy) {
+		proxy = render;
+
+		for (const hook of hooks) {
+			proxy = new Proxy(proxy, {
+				apply: (target, self, args) => {
+					let result = [target, self, args];
+
+					if (!hook.manipulateResult) {
+						result = [Reflect.apply(target, self, args)];
+					}
+
+					return hook.callback(...result) ?? Reflect.apply(target, self, args);
+				},
+			});
+		}
+
+		cache[key] = proxy;
+	}
+
+	return proxy;
 }
