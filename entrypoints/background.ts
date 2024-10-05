@@ -64,7 +64,9 @@ export default defineBackground(() => {
 		if (!success) return undefined;
 
 		const json = await response.json();
-		const address = json?.joinScript?.UdmuxEndpoints?.[0]?.Address;
+		const address =
+			json?.joinScript?.UdmuxEndpoints?.[0]?.Address ??
+			json?.joinScript?.MachineAddress;
 		const region = await getServerRegion(address);
 
 		return {
