@@ -1,7 +1,10 @@
-export function hookFunction(
-	object: any,
-	name: string,
-	callback: (...any: any[]) => any,
+export function hookFunction<
+	O extends Record<K, (...args: any) => any>,
+	K extends keyof O,
+>(
+	object: O,
+	name: K,
+	callback: (target: O[K], thisArg: O, argArray: any[]) => ReturnType<O[K]>,
 ) {
 	const proxy = new Proxy(object[name], {
 		apply: callback,
