@@ -37,10 +37,14 @@ export const GameInstanceCard: ConstructorHook["callback"] = (
 		setIsLoading,
 		maxPlayers,
 		currentPlayersCount,
+		ping,
+		fps,
 	} = props;
 
 	// Return if not checking public servers
 	if (serverListType !== "") return;
+
+	const update = useUpdate();
 
 	useAsyncEffect(async () => {
 		const serverRegion = await sendMessagesOnInjected("getServerRegion", {
@@ -49,8 +53,10 @@ export const GameInstanceCard: ConstructorHook["callback"] = (
 		});
 
 		setServerRegion(serverRegion);
-		console.log("game instance", props);
 	}, []);
+
+	// Fix props not updating when manually updating them on another hook
+	useEffect(() => update(), [props]);
 
 	function handleServerJoin() {
 		Roblox.GameLauncher.joinGameInstance(placeId, id);
@@ -109,7 +115,12 @@ export const GameInstanceCard: ConstructorHook["callback"] = (
 					<span style={{ border: "none", background: "none", padding: 0 }}>
 						<Tooltip
 							id={`${cssKey}-tooltip`}
-							content={"omg"}
+							content={
+								<div>
+									<p>Ping: {ping}</p>
+									<p>Load: {100 - Math.floor((fps / 60) * 100)}%</p>
+								</div>
+							}
 							placement="bottom"
 						>
 							<img

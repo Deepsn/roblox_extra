@@ -10,6 +10,10 @@ export default defineUnlistedScript(async () => {
 	console.log("react loaded");
 
 	hookConstructor((props) => !!props?.gameServerStatus, GameInstanceCard, true);
-	hookConstructor((props) => !!props?.loadMoreGameInstances, GameListSection);
+	hookConstructor(
+		(props) => !!props?.loadMoreGameInstances,
+		GameListSection,
+		true,
+	);
 	// hookConstructor((props) => !!props?.getGameServers, RunningGameServers, true);
 });
