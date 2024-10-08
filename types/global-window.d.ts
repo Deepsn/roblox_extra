@@ -19,6 +19,7 @@ export declare global {
 	const useState: typeof import("react").useState;
 	const useCallback: typeof import("react").useCallback;
 	const useContext: typeof import("react").useContext;
+	const useMemo: typeof import("react").useMemo;
 	const createContext: typeof import("react").createContext;
 
 	interface Window {
@@ -34,6 +35,7 @@ export declare global {
 		useState: typeof import("react").useState;
 		useCallback: typeof import("react").useCallback;
 		useContext: typeof import("react").useContext;
+		useMemo: typeof import("react").useMemo;
 		createContext: typeof import("react").createContext;
 	}
 
