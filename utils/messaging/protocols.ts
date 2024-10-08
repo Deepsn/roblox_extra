@@ -1,3 +1,3 @@
-import type { ServerInfoProtocol } from "@/utils/messaging/server-info";
+import type { ServerRegionProtocol } from "@/utils/messaging/server-info";
 
-export interface MessengersProtocol extends ServerInfoProtocol {}
+export interface MessengersProtocol extends ServerRegionProtocol {}

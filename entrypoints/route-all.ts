@@ -9,6 +9,8 @@ export default defineUnlistedScript(async () => {
 		},
 	};
 
+	await waitForObject(window, "Roblox");
+
 	await waitForObject(window, "React");
 
 	console.log("disabled warning");
@@ -37,6 +39,9 @@ export default defineUnlistedScript(async () => {
 			return current;
 		},
 	});
+
+	// React style guide
+	await waitForObject(window, "ReactStyleGuide");
 
 	hookReact();
 });

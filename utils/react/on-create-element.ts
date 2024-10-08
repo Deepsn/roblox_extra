@@ -52,10 +52,15 @@ export function onCreateElement(
 					let result = [target, self, args];
 
 					if (!hook.manipulateResult) {
-						result = [Reflect.apply(target, self, args)];
+						result = [Reflect.apply(target, self, args), ...args];
 					}
 
-					return hook.callback(...result) ?? Reflect.apply(target, self, args);
+					return (
+						hook.callback(...result) ??
+						(hook.manipulateResult
+							? Reflect.apply(target, self, args)
+							: result[0])
+					);
 				},
 			});
 		}

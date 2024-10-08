@@ -1,4 +1,4 @@
-interface ServerInfo {
+export interface ServerRegion {
 	ip: string;
 	region: {
 		country: string;
@@ -6,8 +6,12 @@ interface ServerInfo {
 	};
 }
 
-export interface ServerInfoProtocol {
-	getServerInfo(data: { placeId: string; gameId: string }):
-		| ServerInfo
+export interface ServerInfo {
+	[key: string]: unknown;
+}
+
+export interface ServerRegionProtocol {
+	getServerRegion(data: { placeId: string; gameId: string }):
+		| ServerRegion
 		| undefined;
 }

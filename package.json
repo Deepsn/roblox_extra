@@ -15,6 +15,7 @@
     "postinstall": "wxt prepare"
   },
   "devDependencies": {
+    "@types/jquery": "^3.5.31",
     "typescript": "^5.5.4",
     "wxt": "^0.19.1"
   },

@@ -9,8 +9,8 @@ export default defineContentScript({
 		"*://*/build/upload",
 	],
 	main(ctx) {
-		onMessagesFromInjected("getServerInfo", ({ placeId, gameId }) => {
-			return sendMessage("getServerInfo", { placeId, gameId });
+		onMessagesFromInjected("getServerRegion", ({ placeId, gameId }) => {
+			return sendMessage("getServerRegion", { placeId, gameId });
 		});
 	},
 });

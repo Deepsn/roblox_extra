@@ -21,6 +21,10 @@ interface Roblox {
 	GameDetail: {
 		UniverseId: number;
 	};
+	GameLauncher: {
+		joinGameInstance: (placeId: number, gameId: string) => void;
+	};
+	browserDoNotTrack: boolean;
 }
 
 interface User {
