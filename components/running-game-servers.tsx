@@ -1,5 +1,6 @@
 import type { Options, ServerCursor, ServerInstance } from "@/types/games";
 import { sendMessagesOnInjected } from "@/utils/messaging/injected";
+import type { ServerRegion } from "@/utils/messaging/server-info";
 import type { ConstructorHook } from "@/utils/react/types/hook";
 
 export const RunningGameServers: ConstructorHook["callback"] = (
@@ -8,100 +9,51 @@ export const RunningGameServers: ConstructorHook["callback"] = (
 	args,
 ) => {
 	const [props] = args;
-	const update = useUpdate();
 
-	useEffect(() => {
-		const original_getGameServers = props.getGameServers;
-		let depth = 0;
+	const original_getGameServers = props.getGameServers;
 
-		async function filter(servers: ServerInstance[], placeId: number) {
-			return (
+	props.getGameServers = async (
+		placeId: number,
+		cursor: ServerCursor,
+		options: Options,
+	) => {
+		const serversRequest = await original_getGameServers(placeId, cursor, {
+			...options,
+			selectedRegion: undefined,
+		});
+		const { data: servers } = serversRequest;
+
+		if (options.selectedRegion) {
+			servers.data = (
 				await Promise.all(
-					servers.map(async (server) => {
-						const location = await sendMessagesOnInjected("getServerInfo", {
-							placeId: placeId.toString(),
-							gameId: server.id,
+					servers.data.map(async (server: ServerInstance) => {
+						const serverRegion = await sendMessagesOnInjected(
+							"getServerRegion",
+							{
+								placeId: placeId.toString(),
+								gameId: server.id,
+							},
+						).catch((err) => {
+							console.log("Failed to fetch server region");
+							return undefined;
 						});
 
-						return { ...server, location };
+						server.region = serverRegion;
+						return server;
 					}),
 				)
-			).filter((server) =>
-				server.location ? server.location.region.country === "BR" : false,
+			).filter(
+				(server: ServerInstance & { region: ServerRegion | undefined }) => {
+					return server.region?.region.location.includes(
+						// biome-ignore lint/style/noNonNullAssertion: selectedRegion is guaranteed to exist here
+						options.selectedRegion!,
+					);
+				},
 			);
 		}
 
-		async function getGameServers(
-			placeId: number,
-			cursor: ServerCursor,
-			options: Options,
-		) {
-			let serversRequest = await original_getGameServers(placeId, cursor, {
-				...options,
-				limit: 100,
-			});
-			const {
-				data,
-			}: {
-				data: (ServerInstance & {
-					location: {
-						ip: string;
-						region: { country: string; location: string };
-					};
-				})[];
-			} = serversRequest.data;
-
-			if (data.length > 0) {
-				serversRequest.data.data = await filter(
-					serversRequest.data.data,
-					placeId,
-				);
-
-				let req = serversRequest;
-
-				while (
-					req.config.url.includes("Public") &&
-					req.data.data.length === 0 &&
-					req.data.nextPageCursor
-				) {
-					console.log("retrying...", depth, serversRequest.data.nextPageCursor);
-
-					if (depth > 400) {
-						break;
-					}
-
-					depth += 1;
-					console.log("waiting");
-
-					await new Promise((resolve) => {
-						setTimeout(resolve, 2000);
-					});
-					console.log("getting...");
-
-					req = await getGameServers(
-						placeId,
-						serversRequest.data.nextPageCursor,
-						{
-							...options,
-							limit: 100,
-						},
-					);
-					if (!req) break;
-					req = await filter(req, placeId);
-				}
-
-				console.log("finished");
-
-				serversRequest = req;
-			}
-
-			console.log("getting game servers", placeId, options, serversRequest);
-
-			return serversRequest;
-		}
-		props.getGameServers = getGameServers;
-		update();
-	}, []);
+		return serversRequest;
+	};
 
 	return Reflect.apply(target, self, args);
 };

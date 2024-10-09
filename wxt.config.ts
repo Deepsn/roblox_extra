@@ -22,7 +22,7 @@ export default defineConfig({
 					matches: ["*://*.roblox.com/*"],
 				},
 			],
-			permissions: ["declarativeNetRequest", "webRequest"],
+			permissions: ["declarativeNetRequest", "webRequest", "storage"],
 			host_permissions: ["*://*.roblox.com/*", "*://*.rbxcdn.com/"],
 		};
 	},
