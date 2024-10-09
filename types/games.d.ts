@@ -19,6 +19,7 @@ export interface ServerInstance {
 export interface Options {
 	excludeFullGames: boolean;
 	sortOrder: "Desc" | "Asc";
+	selectedRegion: string | undefined;
 	limit: string;
 	maxPlayers: number;
 }

@@ -1,5 +1,6 @@
 import type { CoreUtilities as _CoreUtilities } from "@/types/core-utilities";
 import type { ReactStyleGuide as _RobloxStyleGuide } from "@/types/react-style-guide";
+import type { ReactUtilities as _ReactUtilities } from "@/types/react-utilities";
 import type { RobloxThumbnails as _RobloxThumbnails } from "@/types/roblox-thumbnails";
 import type { ConstructorHook } from "@/utils/react/types/hook";
 
@@ -9,8 +10,10 @@ export declare global {
 		__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: any;
 	};
 
-	const RobloxExtra: RobloxExtra;
 	const ReactStyleGuide: _RobloxStyleGuide;
+	const ReactUtilities: _ReactUtilities;
+
+	const RobloxExtra: RobloxExtra;
 	const RobloxThumbnails: _RobloxThumbnails;
 	const CoreUtilities: _CoreUtilities;
 
@@ -20,6 +23,7 @@ export declare global {
 	const useCallback: typeof import("react").useCallback;
 	const useContext: typeof import("react").useContext;
 	const useMemo: typeof import("react").useMemo;
+	const useRef: typeof import("react").useRef;
 	const createContext: typeof import("react").createContext;
 
 	interface Window {
@@ -36,6 +40,7 @@ export declare global {
 		useCallback: typeof import("react").useCallback;
 		useContext: typeof import("react").useContext;
 		useMemo: typeof import("react").useMemo;
+		useRef: typeof import("react").useRef;
 		createContext: typeof import("react").createContext;
 	}
 

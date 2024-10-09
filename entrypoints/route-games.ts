@@ -1,5 +1,7 @@
 import { GameInstanceCard } from "@/components/game-instance-card";
 import { GameListSection } from "@/components/game-list-section";
+import { RunningGameServers } from "@/components/running-game-servers";
+import { ServerListOptions } from "@/components/server-list-options";
 import { hookConstructor } from "@/utils/react/hook-constructor";
 
 export default defineUnlistedScript(async () => {
@@ -15,5 +17,15 @@ export default defineUnlistedScript(async () => {
 		GameListSection,
 		true,
 	);
-	// hookConstructor((props) => !!props?.getGameServers, RunningGameServers, true);
+	hookConstructor(
+		(props) =>
+			(props &&
+				"options" in props &&
+				"setOptions" in props &&
+				"isLoading" in props) ||
+			false,
+		ServerListOptions,
+		true,
+	);
+	hookConstructor((props) => !!props?.getGameServers, RunningGameServers, true);
 });
