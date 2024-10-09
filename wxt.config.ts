@@ -16,6 +16,7 @@ export default defineConfig({
 	},
 	manifest: () => {
 		return {
+			name: "Roblox extra",
 			web_accessible_resources: [
 				{
 					resources: routes,
