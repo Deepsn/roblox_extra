@@ -10,7 +10,14 @@ export const RunningGameServers: ConstructorHook["callback"] = (
 ) => {
 	const [props] = args;
 
+	const lastRequest = useRef(undefined);
 	const original_getGameServers = props.getGameServers;
+
+	const { createSystemFeedback } = ReactStyleGuide;
+	const [SystemFeedback, systemFeedbackService] = useMemo(
+		() => createSystemFeedback(),
+		[],
+	);
 
 	props.getGameServers = async (
 		placeId: number,
@@ -20,6 +27,11 @@ export const RunningGameServers: ConstructorHook["callback"] = (
 		const serversRequest = await original_getGameServers(placeId, cursor, {
 			...options,
 			selectedRegion: undefined,
+		}).catch(() => {
+			systemFeedbackService.warning(
+				"Unable to get servers, please again try later.",
+			);
+			return lastRequest.current;
 		});
 		const { data: servers } = serversRequest;
 
@@ -52,8 +64,17 @@ export const RunningGameServers: ConstructorHook["callback"] = (
 			);
 		}
 
+		if (servers) {
+			lastRequest.current = serversRequest;
+		}
+
 		return serversRequest;
 	};
 
-	return Reflect.apply(target, self, args);
+	return (
+		<>
+			<SystemFeedback />
+			{Reflect.apply(target, self, args)}
+		</>
+	);
 };
