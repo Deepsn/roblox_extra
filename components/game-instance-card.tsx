@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import { PlayerThumbnailContainer } from "@/components/player-thumbnail-container";
 import { useAsyncEffect } from "@/hooks/use-async-effect";
 import { sendMessagesOnInjected } from "@/utils/messaging/injected";
@@ -105,11 +106,7 @@ export const GameInstanceCard: ConstructorHook["callback"] = (
 						disabled={isLoading || currentPlayersCount >= maxPlayers}
 						type="button"
 					>
-						<img
-							src={PlayArrowIcon}
-							style={{ height: 30, width: 30 }}
-							alt="play server"
-						/>
+						<Icon url={PlayArrowIcon} alt="play server" />
 					</button>
 
 					<span style={{ border: "none", background: "none", padding: 0 }}>
@@ -123,11 +120,7 @@ export const GameInstanceCard: ConstructorHook["callback"] = (
 							}
 							placement="bottom"
 						>
-							<img
-								src={InfoIcon}
-								style={{ height: 20, width: 20 }}
-								alt="refresh server"
-							/>
+							<Icon url={InfoIcon} width={20} height={20} alt="server info" />
 						</Tooltip>
 					</span>
 				</div>
