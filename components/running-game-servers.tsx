@@ -1,7 +1,9 @@
-import type { Options, ServerCursor, ServerInstance } from "@/types/games";
+import type { ServerFilterOptions } from "@/components/server-list-filters";
+import type { ServerCursor, ServerInstance } from "@/types/games";
 import { sendMessagesOnInjected } from "@/utils/messaging/injected";
 import type { ServerRegion } from "@/utils/messaging/server-info";
 import type { ConstructorHook } from "@/utils/react/types/hook";
+import { getBestPingServers } from "@/utils/server/filters/best-ping";
 
 export const RunningGameServers: ConstructorHook["callback"] = (
 	target,
@@ -22,7 +24,7 @@ export const RunningGameServers: ConstructorHook["callback"] = (
 	props.getGameServers = async (
 		placeId: number,
 		cursor: ServerCursor,
-		options: Options,
+		options: ServerFilterOptions,
 	) => {
 		const serversRequest = await original_getGameServers(placeId, cursor, {
 			...options,
@@ -33,7 +35,16 @@ export const RunningGameServers: ConstructorHook["callback"] = (
 			);
 			return lastRequest.current;
 		});
+
 		const { data: servers } = serversRequest;
+		const filters = [{ name: "bestPing", filter: getBestPingServers }];
+
+		for (const { name, filter } of filters) {
+			if (!options.filters?.includes(name)) continue;
+			servers.data = filter(servers.data);
+		}
+
+		console.log(servers.data, options);
 
 		if (options.selectedRegion) {
 			servers.data = (

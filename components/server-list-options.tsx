@@ -1,6 +1,8 @@
+import {
+	type ServerFilterOptions,
+	ServerListFilters,
+} from "@/components/server-list-filters";
 import type { ConstructorHook } from "@/utils/react/types/hook";
-
-type ServerFilterOptions = { [key: string]: unknown };
 
 export const ServerListOptions: ConstructorHook["callback"] = (
 	target,
@@ -93,6 +95,8 @@ export const ServerListOptions: ConstructorHook["callback"] = (
 					}}
 				/>
 			</div>
+
+			<ServerListFilters setOptions={setOptions} />
 		</div>
 	);
 };
