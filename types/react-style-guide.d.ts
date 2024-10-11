@@ -1,3 +1,4 @@
+import type { createSystemFeedback } from "@/types/system-feedback/create-system-feedback";
 import type { ReactElement } from "react";
 
 interface Components {
@@ -40,8 +41,17 @@ interface Components {
 	useSystemFeedback: useSystemFeedback;
 }
 
+type IsStrictAny<T> = unknown extends T
+	? T extends object
+		? true
+		: false
+	: false;
 type WithReactElement<T> = {
-	[K in keyof T]: T[K] extends ReactElement ? T[K] : T[K];
+	[K in keyof T]: IsStrictAny<T[K]> extends true
+		? ((...args: any[]) => ReactElement) & {
+				[key: string]: any;
+			}
+		: T[K];
 };
 
 export type ReactStyleGuide = WithReactElement<Components>;
