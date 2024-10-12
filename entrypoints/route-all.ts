@@ -10,7 +10,6 @@ export default defineUnlistedScript(async () => {
 	};
 
 	await waitForObject(window, "Roblox");
-
 	await waitForObject(window, "React");
 
 	console.log("disabled warning");

@@ -2,14 +2,8 @@ import {
 	type ServerFilterOptions,
 	ServerListFilters,
 } from "@/components/server-list-filters";
-import type { ConstructorHook } from "@/utils/react/types/hook";
 
-export const ServerListOptions: ConstructorHook["callback"] = (
-	target,
-	self,
-	args,
-) => {
-	const [props] = args;
+export function ServerListOptions(props: { [key: string]: any }) {
 	const { translate, options, setOptions, isLoading = false } = props;
 	const [selectedRegion, setSelectedRegion] = useState<string>();
 	const previousRegion = useRef(selectedRegion);
@@ -99,4 +93,4 @@ export const ServerListOptions: ConstructorHook["callback"] = (
 			<ServerListFilters setOptions={setOptions} />
 		</div>
 	);
-};
+}

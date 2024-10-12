@@ -3,44 +3,35 @@ import { PlayerThumbnailContainer } from "@/components/player-thumbnail-containe
 import { useAsyncEffect } from "@/hooks/use-async-effect";
 import { sendMessagesOnInjected } from "@/utils/messaging/injected";
 import type { ServerRegion } from "@/utils/messaging/server-info";
-import type { ConstructorHook } from "@/utils/react/types/hook";
 import InfoIcon from "~/assets/icons/info.svg";
 import PlayArrowIcon from "~/assets/icons/play_arrow.svg";
 
-export const GameInstanceCard: ConstructorHook["callback"] = (
-	target,
-	self,
-	args,
-) => {
-	const [props] = args;
+export function GameInstanceCard({
+	id,
+	translate,
+	cssKey,
+	serverListType,
+	placeId,
+	gameServerStatus,
+	canManagePlace,
+	name,
+	vipServerId,
+	vipServerSubscription,
+	accessCode,
+	showSlowGameMessage,
+	owner,
+	players,
+	onShutdownServerSuccess,
+	systemFeedbackService,
+	isLoading,
+	setIsLoading,
+	maxPlayers,
+	currentPlayersCount,
+	ping,
+	fps,
+}: { [key: string]: any }) {
 	const { Tooltip } = ReactStyleGuide;
-
 	const [serverRegion, setServerRegion] = useState<ServerRegion>();
-
-	const {
-		id,
-		translate,
-		cssKey,
-		serverListType,
-		placeId,
-		gameServerStatus,
-		canManagePlace,
-		name,
-		vipServerId,
-		vipServerSubscription,
-		accessCode,
-		showSlowGameMessage,
-		owner,
-		players,
-		onShutdownServerSuccess,
-		systemFeedbackService,
-		isLoading,
-		setIsLoading,
-		maxPlayers,
-		currentPlayersCount,
-		ping,
-		fps,
-	} = props;
 
 	// Return if not checking public servers
 	if (serverListType !== "") return;
@@ -55,9 +46,6 @@ export const GameInstanceCard: ConstructorHook["callback"] = (
 
 		setServerRegion(serverRegion);
 	}, []);
-
-	// Fix props not updating when manually updating them on another hook
-	useEffect(() => update(), [props]);
 
 	function handleServerJoin() {
 		Roblox.GameLauncher.joinGameInstance(placeId, id);
@@ -180,4 +168,4 @@ export const GameInstanceCard: ConstructorHook["callback"] = (
 			</div>
 		</li>
 	);
-};
+}

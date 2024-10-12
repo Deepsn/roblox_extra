@@ -14,6 +14,7 @@ export interface ServerInstance {
 	ping: number;
 	maxPlayers: number;
 	playerTokens: string[];
+	vipServerId?: string;
 }
 
 export interface Options {

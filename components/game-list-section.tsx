@@ -1,43 +1,204 @@
-import { queryElement } from "@/utils/react/query-element";
+import { GameInstanceCard } from "@/components/game-instance-card";
+import { ServerListOptions } from "@/components/server-list-options";
+import type { ServerInstance } from "@/types/games";
 import type { ConstructorHook } from "@/utils/react/types/hook";
-import type { ReactElement } from "react";
+import { gameInstanceConstants } from "@/utils/server/constants/resources";
 
 export const GameListSection: ConstructorHook["callback"] = (
-	target,
-	self,
-	args,
+	element,
+	props,
 ) => {
-	const [props] = args;
-	const { type } = props;
+	// const [props] = args;
+	const {
+		gameInstances,
+		handleGameInstanceShutdownAtIndex,
+		headerTitle,
+		isLoading,
+		loadMoreGameInstances,
+		loadingError,
+		placeId,
+		refreshGameInstances,
+		setIsLoading,
+		showLoadMoreButton,
+		translate,
+		type,
+		userCanManagePlace,
+	} = props;
 
 	if (type !== "") return;
 
-	const element = Reflect.apply(target, self, args) as ReactElement;
+	const { createSystemFeedback, Loading, Button } = ReactStyleGuide;
+	const [SystemFeedback, systemFeedbackService] = createSystemFeedback();
+	const cssKey = type ? `${type}-` : "";
+
+	const emptyGameInstanceList = gameInstances.length === 0;
+	const footerClass = `rbx-${cssKey}running-games-footer`;
+	const id = `rbx-${cssKey}running-games`;
+	const itemContainerClass = `card-list rbx-${cssKey}game-server-item-container`;
+	const itemContainerId = `rbx-${cssKey}game-server-item-container`;
+
+	const displayedGameInstances = useMemo<ServerInstance[]>(() => {
+		const extraGameInstances = gameInstances.length % 2;
+		if (extraGameInstances > 0 && showLoadMoreButton) {
+			return gameInstances.slice(0, -1 * extraGameInstances);
+		}
+		return gameInstances;
+	}, [gameInstances, showLoadMoreButton]);
+
+	const [options, setOptions] = useState({
+		type: "",
+		showLoadMoreButton: false,
+		loadMoreButtonText: "",
+		headerTitle: "",
+		gameInstances: [],
+	});
 
 	useEffect(() => {
-		const serverContainerReact = queryElement(element, "server-item-container");
-		const id = serverContainerReact?.props.id as string | undefined;
+		refreshGameInstances?.(options);
+	}, [options]);
 
-		if (!id) return;
+	return (
+		<>
+			<SystemFeedback />
+			<div
+				id={id}
+				className="stack server-list-section"
+				data-placeid={placeId}
+				data-showshutdown
+			>
+				{headerTitle && (
+					<div className="container-header">
+						<div className="server-list-container-header">
+							<h2 className="server-list-header">{headerTitle}</h2>
+							<Button
+								className="btn-more rbx-refresh refresh-link-icon"
+								isDisabled={isLoading}
+								onClick={() => refreshGameInstances(options)}
+								size={Button.sizes.extraSmall}
+								variant={Button.variants.control}
+							>
+								Refresh
+							</Button>
+						</div>
+						{type === "" && (
+							<ServerListOptions
+								{...{
+									isLoading,
+									options,
+									setOptions,
+									translate,
+								}}
+							/>
+						)}
+					</div>
+				)}
 
-		for (const server of serverContainerReact?.props.children ?? []) {
-			const id = server.props.id;
-			const gameInstance = props.gameInstances.find(
-				(instance: Record<string, unknown>) => instance.id === id,
-			);
-			if (!gameInstance) continue;
+				{emptyGameInstanceList ? (
+					<div className="section-content-off empty-game-instances-container">
+						{isLoading ? (
+							<Loading />
+						) : (
+							<p className="no-servers-message">
+								{loadingError
+									? translate(
+											gameInstanceConstants.resources.loadServersError,
+										) || "Unable to load servers."
+									: translate(
+											gameInstanceConstants.resources.noServersFoundText,
+										)}
+							</p>
+						)}
+					</div>
+				) : (
+					<>
+						<ul
+							id={itemContainerId}
+							className={itemContainerClass}
+							style={{
+								display: "flex",
+								flexDirection: "column",
+								gap: "12px",
+								flexFlow: "wrap",
+							}}
+						>
+							{displayedGameInstances.map(
+								(
+									{
+										accessCode,
+										id: instanceId,
+										maxPlayers,
+										name,
+										owner,
+										pfs, // TODO(SHARE-414): Is this information that we actually get from the backend? Let's remove if not.
+										players,
+										playing,
+										vipServerId,
+										vipServerSubscription,
+										fps,
+										ping,
+									}: ServerInstance,
+									index,
+								) => (
+									<GameInstanceCard
+										key={vipServerId}
+										{...{
+											accessCode,
+											canManagePlace: userCanManagePlace,
+											cssKey,
+											currentPlayersCount: playing || players.length,
+											gameServerStatus: translate(
+												gameInstanceConstants.resources.playerCountText,
+												{
+													currentPlayers: playing || players.length,
+													maximumAllowedPlayers: maxPlayers,
+												},
+											),
+											id: instanceId,
+											isLoading,
+											maxPlayers,
+											name,
+											onShutdownServerSuccess: () => {
+												handleGameInstanceShutdownAtIndex(index);
+											},
+											owner,
+											placeId,
+											players,
+											serverListType: type,
+											setIsLoading,
+											showSlowGameMessage:
+												(pfs as number) <
+												gameInstanceConstants.slowGameFpsThreshold,
+											systemFeedbackService,
+											translate,
+											vipServerId,
+											vipServerSubscription,
+											fps,
+											ping,
+										}}
+									/>
+								),
+							)}
+						</ul>
 
-			server.props.ping = gameInstance.ping;
-			server.props.fps = gameInstance.fps;
-		}
-
-		const serverContainer = $<HTMLUListElement>(`#${id}`);
-
-		serverContainer.css("display", "flex");
-		serverContainer.css("flex-direction", "column");
-		serverContainer.css("gap", "12px");
-		serverContainer.css("flex-flow", "wrap");
-	}, [element]);
-
-	return element;
+						<div className={footerClass}>
+							{showLoadMoreButton && (
+								<Button
+									className="rbx-running-games-load-more"
+									isDisabled={isLoading}
+									onClick={() => loadMoreGameInstances(options)}
+									type="button"
+									variant={Button.variants.control}
+									width={Button.widths.full}
+								>
+									{translate(
+										gameInstanceConstants.resources.loadMoreButtonText,
+									)}
+								</Button>
+							)}
+						</div>
+					</>
+				)}
+			</div>
+		</>
+	);
 };
