@@ -45,13 +45,7 @@ export const GameListSection: ConstructorHook["callback"] = (
 		return gameInstances;
 	}, [gameInstances, showLoadMoreButton]);
 
-	const [options, setOptions] = useState({
-		type: "",
-		showLoadMoreButton: false,
-		loadMoreButtonText: "",
-		headerTitle: "",
-		gameInstances: [],
-	});
+	const [options, setOptions] = useState(gameInstanceConstants.defaultOptions);
 
 	useEffect(() => {
 		refreshGameInstances?.(options);
