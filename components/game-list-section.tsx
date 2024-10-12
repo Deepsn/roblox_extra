@@ -77,7 +77,9 @@ export const GameListSection: ConstructorHook["callback"] = (
 								size={Button.sizes.extraSmall}
 								variant={Button.variants.control}
 							>
-								Refresh
+								{translate(
+									gameInstanceConstants.resources.privateServerRefreshText,
+								) || "Refresh"}
 							</Button>
 						</div>
 						{type === "" && (
