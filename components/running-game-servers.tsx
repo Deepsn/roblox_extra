@@ -1,7 +1,5 @@
 import type { ServerFilterOptions } from "@/components/server-list-filters";
-import type { ServerCursor, ServerInstance } from "@/types/games";
-import { sendMessagesOnInjected } from "@/utils/messaging/injected";
-import type { ServerRegion } from "@/utils/messaging/server-info";
+import type { ServerCursor } from "@/types/games";
 import type { ConstructorHook } from "@/utils/react/types/hook";
 import { getBestPingServers } from "@/utils/server/filters/best-ping";
 
@@ -26,13 +24,18 @@ export const RunningGameServers: ConstructorHook["callback"] = (
 		cursor: ServerCursor,
 		options: ServerFilterOptions,
 	) => {
-		const serversRequest = await original_getGameServers(placeId, cursor, {
-			...options,
-			selectedRegion: undefined,
-		}).catch(() => {
-			systemFeedbackService.warning(
-				"Unable to get servers, please again try later.",
-			);
+		const serversRequest = await original_getGameServers(
+			placeId,
+			cursor,
+			options,
+		).catch((err: { status: number }) => {
+			if (err.status !== 429) {
+				systemFeedbackService.warning(
+					"Unable to get servers, please again try later.",
+				);
+				console.error(err);
+			}
+
 			return lastRequest.current;
 		});
 
@@ -45,35 +48,6 @@ export const RunningGameServers: ConstructorHook["callback"] = (
 		}
 
 		console.log(servers.data, options);
-
-		if (options.selectedRegion) {
-			servers.data = (
-				await Promise.all(
-					servers.data.map(async (server: ServerInstance) => {
-						const serverRegion = await sendMessagesOnInjected(
-							"getServerRegion",
-							{
-								placeId: placeId.toString(),
-								gameId: server.id,
-							},
-						).catch((err) => {
-							console.log("Failed to fetch server region");
-							return undefined;
-						});
-
-						server.region = serverRegion;
-						return server;
-					}),
-				)
-			).filter(
-				(server: ServerInstance & { region: ServerRegion | undefined }) => {
-					return server.region?.region.location.includes(
-						// biome-ignore lint/style/noNonNullAssertion: selectedRegion is guaranteed to exist here
-						options.selectedRegion!,
-					);
-				},
-			);
-		}
 
 		if (servers) {
 			lastRequest.current = serversRequest;
