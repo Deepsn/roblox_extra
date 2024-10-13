@@ -36,8 +36,6 @@ export function GameInstanceCard({
 	// Return if not checking public servers
 	if (serverListType !== "") return;
 
-	const update = useUpdate();
-
 	useAsyncEffect(async () => {
 		const serverRegion = await sendMessagesOnInjected("getServerRegion", {
 			placeId: placeId,
@@ -91,7 +89,7 @@ export function GameInstanceCard({
 						}}
 						className={`rbx-${cssKey}game-server-join`}
 						onClick={handleServerJoin}
-						disabled={isLoading || currentPlayersCount >= maxPlayers}
+						disabled={isLoading}
 						type="button"
 					>
 						<Icon url={PlayArrowIcon} alt="play server" />
