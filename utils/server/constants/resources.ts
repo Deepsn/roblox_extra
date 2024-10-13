@@ -87,4 +87,4 @@ export const gameInstanceConstants = {
 		transactionFailedHeading: "Heading.TransactionFailed",
 		twoFriendsInServerLabel: "Label.TwoFriendsInServer",
 	},
-};
+} as const;
