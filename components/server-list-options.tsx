@@ -95,7 +95,6 @@ export function ServerListOptions(props: { [key: string]: any }) {
 				/>
 			</div>
 
-			<ServerListFilters setOptions={setOptions} />
 			<ServerListFilters isLoading={isLoading} setOptions={setOptions} />
 
 			<div className="checkbox" style={{ margin: 0 }}>
