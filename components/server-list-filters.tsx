@@ -7,11 +7,16 @@ import WifiIcon from "~/assets/icons/wifi.svg";
 
 export function ServerListFilters({
 	setOptions,
-}: { setOptions: Dispatch<SetStateAction<ExtendedServerOptions>> }) {
+	isLoading,
+}: {
+	setOptions: Dispatch<SetStateAction<ExtendedServerOptions>>;
+	isLoading: boolean;
+}) {
 	const { Dropdown } = ReactStyleGuide;
 
 	return (
 		<Dropdown
+			disabled={isLoading}
 			style={{ flex: 1 }}
 			id="server-list-filters"
 			currSelectionLabel={
@@ -40,13 +45,15 @@ export function ServerListFilters({
 			size="sm"
 			autoClose="outside"
 		>
-			<Dropdown.Item id="smallest">
+			<Dropdown.Item disabled={isLoading} id="smallest">
 				<Icon url={PersonRemoveIcon} width={20} height={20} /> Smallest servers
 			</Dropdown.Item>
-			<Dropdown.Item id="bestPing">
+			<Dropdown.Item disabled={isLoading} id="bestPing">
 				<Icon url={WifiIcon} width={20} height={20} /> Best ping
 			</Dropdown.Item>
-			<Dropdown.Item id="lowestLoad">Lowest server load</Dropdown.Item>
+			<Dropdown.Item disabled={isLoading} id="lowestLoad">
+				Lowest server load
+			</Dropdown.Item>
 		</Dropdown>
 	);
 }
