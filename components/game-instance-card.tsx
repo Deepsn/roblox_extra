@@ -147,7 +147,7 @@ export function GameInstanceCard({
 					<div>
 						<p>{gameServerStatus}</p>
 						{serverRegion ? (
-							<p>{`${serverRegion.region.location} - ${serverRegion.region.country}`}</p>
+							<p>{`${serverRegion.location} - ${serverRegion.country}`}</p>
 						) : (
 							<p>Unknown - N/A</p>
 						)}

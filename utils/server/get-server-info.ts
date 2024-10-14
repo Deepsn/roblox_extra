@@ -1,46 +1,49 @@
 import { storage } from "wxt/storage";
 
-const LIFETIME_IN_MS = 5 * 60 * 60 * 1000; // 5 hours in ms
-
-function convertToKey(placeId: string, gameId: string): `local:${string}` {
-	return `local:${placeId}${gameId}_serverinfo`;
+interface ServerInfo {
+	machineAddress: string;
 }
 
-async function getFromCache(key: `local:${string}`) {
-	const clear = async () => await storage.removeItem(key);
+const LIFETIME_IN_MS = 15 * 60 * 1000; // 15 minutes in ms
 
-	const [value, meta] = await Promise.all([
-		storage.getItem(key, { fallback: "" }),
-		storage.getMeta<{ timestamp: number }>(key),
-	]);
+async function getFromCache(placeId: string, gameId: string) {
+	const instances = await storage.getItem<{
+		[gameId: string]: ServerInfo & { timestamp: number };
+	}>(`local:${placeId}`);
 
-	if (!value || !meta?.timestamp) return await clear();
-
-	if (meta.timestamp + LIFETIME_IN_MS < Date.now()) {
-		await clear();
+	if (!instances) {
+		await storage.setItem(`local:${placeId}`, {});
 		return;
 	}
 
-	let parsed = undefined;
+	const now = Date.now();
+	const instance = instances[gameId];
 
-	try {
-		parsed = JSON.parse(value);
-	} catch (err) {
-		console.log("Err parsing json", err);
-		await clear();
+	if (instance && now > instance.timestamp) {
+		delete instances[gameId];
+		await storage.setItem(`local:${placeId}`, instances);
+		return;
 	}
 
-	return parsed;
+	return instance;
 }
 
-async function saveToCache(key: `local:${string}`, value: unknown) {
-	await storage.setItem(key, JSON.stringify(value));
-	await storage.setMeta(key, { timestamp: Date.now() });
+async function saveToCache(placeId: string, gameId: string, value: ServerInfo) {
+	const instances =
+		(await storage.getItem<{
+			[gameId: string]: ServerInfo & { timestamp: number };
+		}>(`local:${placeId}`)) ?? {};
+
+	instances[gameId] = { ...value, timestamp: Date.now() + LIFETIME_IN_MS };
+
+	await storage.setItem(`local:${placeId}`, instances);
 }
 
-export async function getServerInfo(placeId: string, gameId: string) {
-	const key = convertToKey(placeId, gameId);
-	const serverInfoFromCache = await getFromCache(key);
+export async function getServerInfo(
+	placeId: string,
+	gameId: string,
+): Promise<ServerInfo | undefined> {
+	const serverInfoFromCache = await getFromCache(placeId, gameId);
 
 	if (serverInfoFromCache) {
 		return serverInfoFromCache;
@@ -62,7 +65,42 @@ export async function getServerInfo(placeId: string, gameId: string) {
 	if (!success) return;
 
 	const json = await response.json();
-	await saveToCache(key, json);
+	const machineAddress =
+		json?.joinScript?.UdmuxEndpoints?.[0]?.Address ??
+		json?.joinScript?.MachineAddress;
+	if (!machineAddress) return;
 
-	return json;
+	const serverInfo = {
+		machineAddress,
+	} as ServerInfo;
+
+	saveToCache(placeId, gameId, serverInfo);
+
+	return serverInfo;
 }
+
+setInterval(async () => {
+	const places = await storage.snapshot("local");
+
+	for (const placeId in places) {
+		const now = Date.now();
+		const instances = places[placeId] as {
+			[gameId: string]: ServerInfo & { timestamp: number };
+		};
+
+		for (const gameId in instances) {
+			const instance = instances[gameId];
+
+			if (now > instance.timestamp) {
+				console.log(`removing ${gameId}`);
+				delete instances[gameId];
+			}
+		}
+
+		if (Object.keys(instances).length === 0) {
+			await storage.removeItem(`local:${placeId}`);
+		} else {
+			await storage.setItem(`local:${placeId}`, instances);
+		}
+	}
+}, LIFETIME_IN_MS - 1);

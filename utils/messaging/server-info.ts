@@ -1,13 +1,6 @@
 export interface ServerRegion {
-	ip: string;
-	region: {
-		country: string;
-		location: string;
-	};
-}
-
-export interface ServerInfo {
-	[key: string]: unknown;
+	country: string;
+	location: string;
 }
 
 export interface ServerRegionProtocol {

@@ -50,18 +50,13 @@ export default defineBackground(() => {
 		const { placeId, gameId } = message.data;
 		const serverInfo = await getServerInfo(placeId, gameId);
 
-		const address =
-			serverInfo?.joinScript?.UdmuxEndpoints?.[0]?.Address ??
-			serverInfo?.joinScript?.MachineAddress;
+		const address = serverInfo?.machineAddress;
 		const region = await getServerRegion(address);
 
 		if (!address) {
 			console.log(serverInfo);
 		}
 
-		return {
-			ip: address,
-			region,
-		};
+		return region;
 	});
 });

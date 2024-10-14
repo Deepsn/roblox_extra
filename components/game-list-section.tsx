@@ -53,9 +53,8 @@ export const GameListSection: ConstructorHook["callback"] = (
 	);
 
 	useEffect(() => {
-		if (isLoading) return;
 		refreshGameInstances?.(options);
-	}, [options, isLoading]);
+	}, [options]);
 
 	return (
 		<>
@@ -69,7 +68,10 @@ export const GameListSection: ConstructorHook["callback"] = (
 				{headerTitle && (
 					<div className="container-header">
 						<div className="server-list-container-header">
-							<h2 className="server-list-header">{headerTitle}</h2>
+							<h2 className="server-list-header">
+								{headerTitle} - {gameInstances.length} servers
+							</h2>
+
 							<Button
 								className="btn-more rbx-refresh refresh-link-icon"
 								isDisabled={isLoading}
@@ -95,21 +97,16 @@ export const GameListSection: ConstructorHook["callback"] = (
 					</div>
 				)}
 
-				{emptyGameInstanceList ? (
+				{isLoading ? (
+					<Loading />
+				) : emptyGameInstanceList ? (
 					<div className="section-content-off empty-game-instances-container">
-						{isLoading ? (
-							<Loading />
-						) : (
-							<p className="no-servers-message">
-								{loadingError
-									? translate(
-											gameInstanceConstants.resources.loadServersError,
-										) || "Unable to load servers."
-									: translate(
-											gameInstanceConstants.resources.noServersFoundText,
-										)}
-							</p>
-						)}
+						<p className="no-servers-message">
+							{loadingError
+								? translate(gameInstanceConstants.resources.loadServersError) ||
+									"Unable to load servers."
+								: translate(gameInstanceConstants.resources.noServersFoundText)}
+						</p>
 					</div>
 				) : (
 					<>
@@ -142,7 +139,7 @@ export const GameListSection: ConstructorHook["callback"] = (
 									index,
 								) => (
 									<GameInstanceCard
-										key={vipServerId}
+										key={instanceId}
 										{...{
 											accessCode,
 											canManagePlace: userCanManagePlace,
