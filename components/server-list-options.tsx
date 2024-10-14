@@ -1,6 +1,7 @@
+import { Icon } from "@/components/icon";
 import { ServerListFilters } from "@/components/server-list-filters";
-import { ServerListSorts } from "@/components/server-list-sorts";
 import type { Options } from "@/types/games";
+import PublicIcon from "~/assets/icons/public.svg";
 
 export type ExtendedServerOptions = Options & {
 	filters?: string[];
@@ -58,10 +59,29 @@ export function ServerListOptions(props: { [key: string]: any }) {
 				</div>
 			</div> */}
 
-			<div className="input-group">
+			<div
+				className="input-group input-field new-input-field"
+				style={{ padding: 0 }}
+			>
+				<div
+					style={{
+						display: "inline-block",
+						width: "0px",
+						position: "relative",
+						left: "10px",
+					}}
+				>
+					<Icon url={PublicIcon} width={23} height={23} />
+				</div>
+
 				<input
-					className="input-field new-input-field"
-					style={{ borderRadius: "8px" }}
+					style={{
+						paddingLeft: "42px",
+						borderRadius: "8px",
+						background: "none",
+						border: "none",
+						height: "100%",
+					}}
 					maxLength={120}
 					autoComplete="off"
 					autoCorrect="off"
