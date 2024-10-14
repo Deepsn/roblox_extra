@@ -10,10 +10,11 @@ export default defineUnlistedScript(async () => {
 	};
 
 	await waitForObject(window, "Roblox");
-	await waitForObject(window, "React");
 
 	console.log("disabled warning");
-	Roblox.DeveloperConsoleWarning.showWarning = () => {};
+	Roblox.DeveloperConsoleWarning = { showWarning: () => {} };
+
+	await waitForObject(window, "React");
 
 	// React global utils
 	const internals = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
