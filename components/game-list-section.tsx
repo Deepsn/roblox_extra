@@ -53,8 +53,9 @@ export const GameListSection: ConstructorHook["callback"] = (
 	);
 
 	useEffect(() => {
+		if (isLoading) return;
 		refreshGameInstances?.(options);
-	}, [options]);
+	}, [options, isLoading]);
 
 	return (
 		<>
