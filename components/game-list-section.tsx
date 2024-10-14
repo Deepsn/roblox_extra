@@ -1,5 +1,8 @@
 import { GameInstanceCard } from "@/components/game-instance-card";
-import { ServerListOptions } from "@/components/server-list-options";
+import {
+	type ExtendedServerOptions,
+	ServerListOptions,
+} from "@/components/server-list-options";
 import type { ServerInstance } from "@/types/games";
 import type { ConstructorHook } from "@/utils/react/types/hook";
 import { gameInstanceConstants } from "@/utils/server/constants/resources";
@@ -45,7 +48,9 @@ export const GameListSection: ConstructorHook["callback"] = (
 		return gameInstances;
 	}, [gameInstances, showLoadMoreButton]);
 
-	const [options, setOptions] = useState(gameInstanceConstants.defaultOptions);
+	const [options, setOptions] = useState<Partial<ExtendedServerOptions>>(
+		gameInstanceConstants.defaultOptions,
+	);
 
 	useEffect(() => {
 		refreshGameInstances?.(options);

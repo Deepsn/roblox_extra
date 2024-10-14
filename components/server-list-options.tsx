@@ -1,7 +1,12 @@
-import {
-	type ServerFilterOptions,
-	ServerListFilters,
-} from "@/components/server-list-filters";
+import { ServerListFilters } from "@/components/server-list-filters";
+import { ServerListSorts } from "@/components/server-list-sorts";
+import type { Options } from "@/types/games";
+
+export type ExtendedServerOptions = Options & {
+	filters?: string[];
+	sorters?: string[];
+	[key: string]: unknown;
+};
 
 export function ServerListOptions(props: { [key: string]: any }) {
 	const { translate, options, setOptions, isLoading = false } = props;
@@ -12,7 +17,7 @@ export function ServerListOptions(props: { [key: string]: any }) {
 		const debounceId = setTimeout(() => {
 			if (isLoading || previousRegion.current === selectedRegion) return;
 
-			setOptions((prevState: ServerFilterOptions) => ({
+			setOptions((prevState: ExtendedServerOptions) => ({
 				...prevState,
 				selectedRegion,
 			}));
@@ -27,7 +32,7 @@ export function ServerListOptions(props: { [key: string]: any }) {
 			className="server-list-options"
 			style={{ gap: "12px", marginTop: "6px", marginBottom: "6px" }}
 		>
-			<div style={{ display: "flex" }}>
+			{/* <div style={{ display: "flex" }}>
 				<label className="select-label text-label" htmlFor="sort-select">
 					Number of Players
 				</label>
@@ -35,7 +40,7 @@ export function ServerListOptions(props: { [key: string]: any }) {
 				<div className="rbx-select-group select-group">
 					<select
 						onChange={(e) => {
-							setOptions((prevState: ServerFilterOptions) => ({
+							setOptions((prevState: ExtendedServerOptions) => ({
 								...prevState,
 								sortOrder: e.currentTarget.value,
 							}));
@@ -51,27 +56,7 @@ export function ServerListOptions(props: { [key: string]: any }) {
 					</select>
 					<span className="icon-arrow icon-down-16x16" />
 				</div>
-			</div>
-
-			<div className="checkbox" style={{ margin: 0 }}>
-				<input
-					onChange={(e) => {
-						setOptions((prevState: ServerFilterOptions) => ({
-							...prevState,
-							excludeFullGames: e.currentTarget.checked,
-						}));
-					}}
-					disabled={isLoading}
-					type="checkbox"
-					id="filter-checkbox"
-					data-testid="filter-checkbox"
-					checked={options.excludeFullGames}
-				/>
-
-				<label className="checkbox-label text-label" htmlFor="filter-checkbox">
-					Hide Full Servers
-				</label>
-			</div>
+			</div> */}
 
 			<div className="input-group">
 				<input
@@ -91,6 +76,26 @@ export function ServerListOptions(props: { [key: string]: any }) {
 			</div>
 
 			<ServerListFilters setOptions={setOptions} />
+
+			<div className="checkbox" style={{ margin: 0 }}>
+				<input
+					onChange={(e) => {
+						setOptions((prevState: ExtendedServerOptions) => ({
+							...prevState,
+							excludeFullGames: e.currentTarget.checked,
+						}));
+					}}
+					disabled={isLoading}
+					type="checkbox"
+					id="filter-checkbox"
+					data-testid="filter-checkbox"
+					checked={options.excludeFullGames}
+				/>
+
+				<label className="checkbox-label text-label" htmlFor="filter-checkbox">
+					Hide Full Servers
+				</label>
+			</div>
 		</div>
 	);
 }

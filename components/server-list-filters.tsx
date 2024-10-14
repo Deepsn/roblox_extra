@@ -1,18 +1,13 @@
 import { Icon } from "@/components/icon";
-import type { Options } from "@/types/games";
+import type { ExtendedServerOptions } from "@/components/server-list-options";
 import type { Dispatch, SetStateAction } from "react";
 import FilterIcon from "~/assets/icons/filter.svg";
 import PersonRemoveIcon from "~/assets/icons/person_remove.svg";
 import WifiIcon from "~/assets/icons/wifi.svg";
 
-export type ServerFilterOptions = Options & {
-	filters?: string[];
-	[key: string]: unknown;
-};
-
 export function ServerListFilters({
 	setOptions,
-}: { setOptions: Dispatch<SetStateAction<ServerFilterOptions>> }) {
+}: { setOptions: Dispatch<SetStateAction<ExtendedServerOptions>> }) {
 	const { Dropdown } = ReactStyleGuide;
 
 	return (

@@ -1,4 +1,4 @@
-import type { ServerFilterOptions } from "@/components/server-list-filters";
+import type { ExtendedServerOptions } from "@/components/server-list-options";
 import type { ServerCursor } from "@/types/games";
 import type { ConstructorHook } from "@/utils/react/types/hook";
 import { getBestPingServers } from "@/utils/server/filters/best-ping";
@@ -22,7 +22,7 @@ export const RunningGameServers: ConstructorHook["callback"] = (
 	props.getGameServers = async (
 		placeId: number,
 		cursor: ServerCursor,
-		options: ServerFilterOptions,
+		options: ExtendedServerOptions,
 	) => {
 		const serversRequest = await original_getGameServers(
 			placeId,
