@@ -17,6 +17,12 @@ export interface ServerInstance {
 	vipServerId?: string;
 }
 
+export interface ServerInstancesResponse {
+	data: ServerInstance[];
+	nextPageCursor: string | undefined;
+	previousPageCursor: string | undefined;
+}
+
 export interface Options {
 	excludeFullGames: boolean;
 	sortOrder: "Desc" | "Asc";
