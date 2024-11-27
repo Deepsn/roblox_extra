@@ -1,3 +1,5 @@
+import { disableDevtoolsWarning } from "@/utils/features/disable-devtools-warning";
+import { linkReactUtils } from "@/utils/features/link-react-utils";
 import { hookReact } from "@/utils/react/hook-react";
 import { waitForObject } from "@/utils/wait-for-object";
 
@@ -11,34 +13,11 @@ export default defineUnlistedScript(async () => {
 
 	await waitForObject(window, "Roblox");
 
-	console.log("disabled warning");
-	Roblox.DeveloperConsoleWarning = { showWarning: () => {} };
+	disableDevtoolsWarning();
 
 	await waitForObject(window, "React");
 
-	// React global utils
-	const internals = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-	const dispatcher = internals.ReactCurrentDispatcher;
-	let current = dispatcher.current;
-
-	Object.defineProperty(dispatcher, "current", {
-		enumerable: true,
-		set(value) {
-			current = value;
-
-			if (!value) return;
-
-			const keys = Object.keys(value).filter((key) => key.includes("use"));
-
-			for (const key of keys) {
-				if (Reflect.has(window, key)) continue;
-				Reflect.set(window, key, (React as any)[key]);
-			}
-		},
-		get() {
-			return current;
-		},
-	});
+	linkReactUtils();
 
 	// React style guide
 	await waitForObject(window, "ReactStyleGuide");
