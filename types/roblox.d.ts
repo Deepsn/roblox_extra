@@ -3,6 +3,8 @@ interface Roblox {
 	DeveloperConsoleWarning: {
 		showWarning: () => void;
 	};
+	PlaceLauncher: PlaceLauncher;
+	Dialog: Dialog;
 	NumberFormatting: {
 		abbreviate: (n: number) => number;
 		abbreviatedFormat: (n: number) => string;
