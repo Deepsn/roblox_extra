@@ -9,10 +9,37 @@ export default defineContentScript({
 	],
 	runAt: "document_start",
 	async main() {
-		const url = window.location.pathname.split("/")[1];
-		console.log("injecting", url);
-		await injectScript("/route-all.js");
-		await injectScript(`route-${url}.js` as ScriptPublicPath);
-		console.log("injected", url);
+		const manifest = browser.runtime.getManifest();
+		const webAccessibleResources = manifest.web_accessible_resources ?? [];
+
+		const pathname = window.location.pathname.split("/")[1].trim();
+		let hostname = window.location.hostname.split(".")[0].trim();
+
+		if (hostname === "www") {
+			hostname = "";
+		}
+
+		const inject = (path: ScriptPublicPath | string) => {
+			const found = webAccessibleResources.some((resource) => {
+				if (typeof resource === "string") {
+					return resource === path;
+				}
+
+				return resource.resources.some((subresource) => subresource === path);
+			});
+			if (!found) return;
+
+			return injectScript(path as ScriptPublicPath);
+		};
+
+		await inject("route-all.js");
+		if (hostname !== "") await inject(`route-${hostname}-all.js`);
+		if (pathname !== "") await inject(`route-${hostname}-${pathname}.js`);
+
+		console.log(
+			"injected\n",
+			`hostname: ${hostname}\n`,
+			`pathname: ${pathname}`,
+		);
 	},
 });
