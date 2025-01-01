@@ -1,8 +1,6 @@
 import type { ServerInstance } from "@/types/games";
 
-export function getBestPingServers(
-	servers: ServerInstance[],
-): ServerInstance[] {
+export function getBestPingServers(servers: ServerInstance[]): ServerInstance[] {
 	if (servers.length === 0) return servers;
 
 	let totalPing = 0;

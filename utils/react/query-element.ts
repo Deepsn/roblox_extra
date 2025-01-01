@@ -1,9 +1,6 @@
 import type { ReactElement } from "react";
 
-export function queryElement(
-	element: ReactElement,
-	elementQuery: string | ((props: any) => boolean),
-) {
+export function queryElement(element: ReactElement, elementQuery: string | ((props: any) => boolean)) {
 	const { isValidElement } = React;
 
 	function search(el: ReactElement): ReactElement | undefined {

@@ -2,6 +2,7 @@ import type { CoreUtilities as _CoreUtilities } from "@/types/core-utilities";
 import type { ReactStyleGuide as _RobloxStyleGuide } from "@/types/react-style-guide";
 import type { ReactUtilities as _ReactUtilities } from "@/types/react-utilities";
 import type { RobloxThumbnails as _RobloxThumbnails } from "@/types/roblox-thumbnails";
+import type { Chunk } from "@/utils/next/types/chunk-hook";
 import type { ConstructorHook } from "@/utils/react/types/hook";
 
 export declare global {
@@ -27,10 +28,12 @@ export declare global {
 	const createContext: typeof import("react").createContext;
 
 	interface Window {
+		RobloxExtra: RobloxExtra;
+
+		// roblox.com
 		RobloxThumbnails: _RobloxThumbnails;
 		CoreUtilities: _CoreUtilities;
 		Roblox: Roblox;
-		RobloxExtra: RobloxExtra;
 		React: typeof import("react");
 		ReactDOM: typeof import("react-dom");
 		ReactStyleGuide: _RobloxStyleGuide;
@@ -42,11 +45,17 @@ export declare global {
 		useMemo: typeof import("react").useMemo;
 		useRef: typeof import("react").useRef;
 		createContext: typeof import("react").createContext;
+
+		// create.roblox.com
+		webpackChunk_N_E: any;
 	}
 
 	interface RobloxExtra {
 		ReactRegistry: {
 			ConstructorsHooks: ConstructorHook[];
+		};
+		WebpackRegistry: {
+			Chunks: Chunk[];
 		};
 	}
 }

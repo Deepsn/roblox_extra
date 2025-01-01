@@ -1,35 +1,33 @@
 {
-  "name": "roblox_extra",
-  "description": "Add more features to the roblox website",
-  "private": true,
-  "version": "0.1.0",
-  "type": "module",
-  "scripts": {
-    "dev": "wxt",
-    "dev:firefox": "wxt -b firefox",
-    "build": "wxt build",
-    "build:firefox": "wxt build -b firefox",
-    "zip": "wxt zip",
-    "zip:firefox": "wxt zip -b firefox",
-    "compile": "tsc --noEmit",
-    "postinstall": "wxt prepare"
-  },
-  "devDependencies": {
-    "@types/jquery": "^3.5.31",
-    "typescript": "^5.5.4",
-    "wxt": "^0.19.1"
-  },
-  "trustedDependencies": [
-    "spawn-sync"
-  ],
-  "devdependencies": {
-    "@biomejs/biome": "^1.9.2",
-    "@types/react": "^18.3.10",
-    "@types/react-dom": "^18.3.0"
-  },
-  "dependencies": {
-    "@webext-core/messaging": "^1.4.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  }
+	"name": "roblox_extra",
+	"description": "Add more features to the roblox website",
+	"private": true,
+	"version": "0.1.0",
+	"type": "module",
+	"scripts": {
+		"dev": "wxt",
+		"dev:firefox": "wxt -b firefox",
+		"build": "wxt build",
+		"build:firefox": "wxt build -b firefox",
+		"zip": "wxt zip",
+		"zip:firefox": "wxt zip -b firefox",
+		"compile": "tsc --noEmit",
+		"postinstall": "wxt prepare"
+	},
+	"devDependencies": {
+		"@types/jquery": "^3.5.31",
+		"typescript": "^5.5.4",
+		"wxt": "^0.19.1"
+	},
+	"trustedDependencies": ["spawn-sync"],
+	"devdependencies": {
+		"@biomejs/biome": "^1.9.2",
+		"@types/react": "^18.3.10",
+		"@types/react-dom": "^18.3.0"
+	},
+	"dependencies": {
+		"@webext-core/messaging": "^1.4.0",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1"
+	}
 }

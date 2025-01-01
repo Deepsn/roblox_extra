@@ -29,10 +29,7 @@ export function ServerListOptions(props: { [key: string]: any }) {
 	}, [selectedRegion, isLoading]);
 
 	return (
-		<div
-			className="server-list-options"
-			style={{ gap: "12px", marginTop: "6px", marginBottom: "6px" }}
-		>
+		<div className="server-list-options" style={{ gap: "12px", marginTop: "6px", marginBottom: "6px" }}>
 			{/* <div style={{ display: "flex" }}>
 				<label className="select-label text-label" htmlFor="sort-select">
 					Number of Players
@@ -59,10 +56,7 @@ export function ServerListOptions(props: { [key: string]: any }) {
 				</div>
 			</div> */}
 
-			<div
-				className="input-group input-field new-input-field"
-				style={{ padding: 0 }}
-			>
+			<div className="input-group input-field new-input-field" style={{ padding: 0 }}>
 				<div
 					style={{
 						display: "inline-block",
@@ -95,6 +89,7 @@ export function ServerListOptions(props: { [key: string]: any }) {
 				/>
 			</div>
 
+			{/* <ServerListSorts setOptions={setOptions} /> */}
 			<ServerListFilters isLoading={isLoading} setOptions={setOptions} />
 
 			<div className="checkbox" style={{ margin: 0 }}>

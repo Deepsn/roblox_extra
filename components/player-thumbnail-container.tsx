@@ -5,14 +5,10 @@ export function PlayerThumbnailContainer({
 	const { Thumbnail2d, ThumbnailTypes } = RobloxThumbnails;
 	const { urlService } = CoreUtilities;
 
-	const getUserProfileUrl = (userId: string) =>
-		urlService.getAbsoluteUrl(`/users/${userId}/profile`);
+	const getUserProfileUrl = (userId: string) => urlService.getAbsoluteUrl(`/users/${userId}/profile`);
 
 	return (
-		<span
-			key={player.playerToken}
-			className="avatar avatar-headshot-sm player-avatar"
-		>
+		<span key={player.playerToken} className="avatar avatar-headshot-sm player-avatar">
 			{player.id == null ? (
 				<Thumbnail2d
 					type={ThumbnailTypes.avatarHeadshot}

@@ -1,29 +1,18 @@
 import type { ExtendedServerOptions } from "@/components/server-list-options";
-import type {
-	ServerCursor,
-	ServerInstance,
-	ServerInstancesResponse,
-} from "@/types/games";
+import type { ServerCursor, ServerInstance, ServerInstancesResponse } from "@/types/games";
 import { sendMessagesOnInjected } from "@/utils/messaging/injected";
 import type { ServerRegion } from "@/utils/messaging/server-info";
 import type { ConstructorHook } from "@/utils/react/types/hook";
 import { getBestPingServers } from "@/utils/server/filters/best-ping";
 
-export const RunningGameServers: ConstructorHook["callback"] = (
-	target,
-	self,
-	args,
-) => {
+export const RunningGameServers: ConstructorHook["callback"] = (target, self, args) => {
 	const [props] = args;
 
 	const lastRequest = useRef<{ data: ServerInstancesResponse }>();
 	const original_getGameServers = useMemo(() => props.getGameServers, []);
 
 	const { createSystemFeedback } = ReactStyleGuide;
-	const [SystemFeedback, systemFeedbackService] = useMemo(
-		() => createSystemFeedback(),
-		[],
-	);
+	const [SystemFeedback, systemFeedbackService] = useMemo(() => createSystemFeedback(), []);
 
 	async function getServerInstances(
 		placeId: number,
@@ -31,28 +20,24 @@ export const RunningGameServers: ConstructorHook["callback"] = (
 		options: ExtendedServerOptions,
 		isExtended?: boolean,
 	) {
-		const serversRequest: { data: ServerInstancesResponse } =
-			await original_getGameServers(placeId, cursor, options).catch(
-				(err: { status: number }) => {
-					if (isExtended) return undefined;
+		const serversRequest: { data: ServerInstancesResponse } = await original_getGameServers(
+			placeId,
+			cursor,
+			options,
+		).catch((err: { status: number }) => {
+			if (isExtended) return undefined;
 
-					if (err.status !== 429) {
-						systemFeedbackService.warning(
-							"Unable to get servers, please again try later.",
-						);
-						console.error(err);
-					}
+			if (err.status !== 429) {
+				systemFeedbackService.warning("Unable to get servers, please again try later.");
+				console.error(err);
+			}
 
-					return lastRequest.current;
-				},
-			);
+			return lastRequest.current;
+		});
 
 		const { data: servers } = serversRequest ?? { data: undefined };
 
-		if (
-			!isExtended &&
-			((options.filters?.length ?? 0) > 0 || options.selectedRegion)
-		) {
+		if (!isExtended && ((options.filters?.length ?? 0) > 0 || options.selectedRegion)) {
 			const filters = [{ name: "bestPing", filter: getBestPingServers }];
 
 			let serversFound = [] as ServerInstance[];
@@ -124,11 +109,8 @@ export const RunningGameServers: ConstructorHook["callback"] = (
 		return serversRequest;
 	}
 
-	props.getGameServers = (
-		placeId: number,
-		cursor: ServerCursor,
-		options: ExtendedServerOptions,
-	) => getServerInstances(placeId, cursor, options, false);
+	props.getGameServers = (placeId: number, cursor: ServerCursor, options: ExtendedServerOptions) =>
+		getServerInstances(placeId, cursor, options, false);
 
 	return (
 		<>

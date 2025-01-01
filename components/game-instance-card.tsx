@@ -3,8 +3,9 @@ import { PlayerThumbnailContainer } from "@/components/player-thumbnail-containe
 import { useAsyncEffect } from "@/hooks/use-async-effect";
 import { sendMessagesOnInjected } from "@/utils/messaging/injected";
 import type { ServerRegion } from "@/utils/messaging/server-info";
+import ContentCopyIcon from "~/assets/icons/content_copy.svg";
+import ControllerIcon from "~/assets/icons/controller.svg";
 import InfoIcon from "~/assets/icons/info.svg";
-import PlayArrowIcon from "~/assets/icons/play_arrow.svg";
 
 export function GameInstanceCard({
 	id,
@@ -36,6 +37,14 @@ export function GameInstanceCard({
 	// Return if not checking public servers
 	if (serverListType !== "") return;
 
+	function handleServerJoin() {
+		Roblox.GameLauncher.joinGameInstance(placeId, id);
+	}
+
+	function handleCopyId() {
+		window.navigator.clipboard.writeText(id);
+	}
+
 	useAsyncEffect(async () => {
 		const serverRegion = await sendMessagesOnInjected("getServerRegion", {
 			placeId: placeId,
@@ -45,20 +54,11 @@ export function GameInstanceCard({
 		setServerRegion(serverRegion);
 	}, []);
 
-	function handleServerJoin() {
-		Roblox.GameLauncher.joinGameInstance(placeId, id);
-	}
-
 	const percent = Math.round((currentPlayersCount / maxPlayers) * 100);
-	const remainingPlayersText =
-		currentPlayersCount - players.length > 0 &&
-		`+${currentPlayersCount - players.length}`;
+	const remainingPlayersText = currentPlayersCount - players.length > 0 && `+${currentPlayersCount - players.length}`;
 
 	return (
-		<li
-			className={`rbx-${cssKey}game-server-item`}
-			style={{ width: "calc(50% - 6px)" }}
-		>
+		<li className={`rbx-${cssKey}game-server-item`} style={{ width: "calc(50% - 6px)" }}>
 			<div
 				className="card-item"
 				style={{
@@ -87,17 +87,15 @@ export function GameInstanceCard({
 							background: "none",
 							padding: 0,
 						}}
-						className={`rbx-${cssKey}game-server-join`}
 						onClick={handleServerJoin}
 						disabled={isLoading}
 						type="button"
 					>
-						<Icon url={PlayArrowIcon} alt="play server" />
+						<Icon width={20} height={20} url={ControllerIcon} alt="play server" />
 					</button>
 
 					<span style={{ border: "none", background: "none", padding: 0 }}>
 						<Tooltip
-							id={`${cssKey}-tooltip`}
 							content={
 								<div>
 									<p>Ping: {ping}</p>
@@ -106,9 +104,24 @@ export function GameInstanceCard({
 							}
 							placement="bottom"
 						>
-							<Icon url={InfoIcon} width={20} height={20} alt="server info" />
+							<Icon width={20} height={20} url={InfoIcon} alt="server info" />
 						</Tooltip>
 					</span>
+
+					<button
+						style={{
+							border: "none",
+							background: "none",
+							padding: 0,
+						}}
+						onClick={handleCopyId}
+						disabled={isLoading}
+						type="button"
+					>
+						<Tooltip content={<p>Copy game id</p>} placement="bottom">
+							<Icon width={20} height={20} url={ContentCopyIcon} alt="copy id" />
+						</Tooltip>
+					</button>
 				</div>
 
 				<div
@@ -120,10 +133,7 @@ export function GameInstanceCard({
 						rowGap: "12px",
 					}}
 				>
-					<div
-						className="player-thumbnails-container"
-						style={{ maxWidth: "none", alignSelf: "auto" }}
-					>
+					<div className="player-thumbnails-container" style={{ maxWidth: "none", alignSelf: "auto" }}>
 						{players.map(
 							(player: {
 								playerToken: string;
@@ -131,10 +141,7 @@ export function GameInstanceCard({
 								id: string;
 								name: string;
 							}) => (
-								<PlayerThumbnailContainer
-									key={player.playerToken}
-									player={player}
-								/>
+								<PlayerThumbnailContainer key={player.playerToken} player={player} />
 							),
 						)}
 						{!!remainingPlayersText && (
@@ -146,23 +153,13 @@ export function GameInstanceCard({
 
 					<div>
 						<p>{gameServerStatus}</p>
-						{serverRegion ? (
-							<p>{`${serverRegion.location} - ${serverRegion.country}`}</p>
-						) : (
-							<p>Unknown - N/A</p>
-						)}
+						{serverRegion ? <p>{`${serverRegion.location} - ${serverRegion.country}`}</p> : <p>Unknown - N/A</p>}
 					</div>
 				</div>
 			</div>
 
-			<div
-				className="server-player-count-gauge border"
-				style={{ margin: 0, border: "none" }}
-			>
-				<div
-					className="gauge-inner-bar border"
-					style={{ width: `${percent}%` }}
-				/>
+			<div className="server-player-count-gauge border" style={{ margin: 0, border: "none" }}>
+				<div className="gauge-inner-bar border" style={{ width: `${percent}%` }} />
 			</div>
 		</li>
 	);

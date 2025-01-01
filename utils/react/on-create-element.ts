@@ -10,10 +10,7 @@ export function onCreateElement(
 	if (!(props instanceof Object)) return;
 	if (props?.internal !== undefined) return;
 
-	let render:
-		| ((...args: any[]) => ReactElement | unknown)
-		| JSXElementConstructor<any>
-		| undefined = undefined;
+	let render: ((...args: any[]) => ReactElement | unknown) | JSXElementConstructor<any> | undefined = undefined;
 
 	if (typeof type === "function") {
 		render = type;
@@ -29,9 +26,7 @@ export function onCreateElement(
 
 	if (!render) return;
 
-	const hooks = RobloxExtra.ReactRegistry.ConstructorsHooks.filter((hook) =>
-		hook.filter(props, render),
-	);
+	const hooks = RobloxExtra.ReactRegistry.ConstructorsHooks.filter((hook) => hook.filter(props, render));
 
 	let cache = constructorProxies.get(type);
 
@@ -55,12 +50,7 @@ export function onCreateElement(
 						result = [Reflect.apply(target, self, args), ...args];
 					}
 
-					return (
-						hook.callback(...result) ??
-						(hook.manipulateResult
-							? Reflect.apply(target, self, args)
-							: result[0])
-					);
+					return hook.callback(...result) ?? (hook.manipulateResult ? Reflect.apply(target, self, args) : result[0]);
 				},
 			});
 		}

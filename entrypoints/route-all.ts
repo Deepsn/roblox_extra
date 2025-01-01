@@ -9,6 +9,9 @@ export default defineUnlistedScript(async () => {
 		ReactRegistry: {
 			ConstructorsHooks: [],
 		},
+		WebpackRegistry: {
+			Chunks: [],
+		},
 	};
 
 	await waitForObject(window, "Roblox");

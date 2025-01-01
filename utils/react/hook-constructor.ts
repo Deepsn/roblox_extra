@@ -13,30 +13,19 @@ export function hookConstructor(
 	let filter: ConstructorHook["filter"] | undefined;
 
 	if (Array.isArray(filterSettings)) {
-		filter = (props) =>
-			filterSettings.find((obj) => props?.[obj] === undefined) === undefined;
+		filter = (props) => filterSettings.find((obj) => props?.[obj] === undefined) === undefined;
 	}
 
-	if (
-		typeof filterSettings === "object" &&
-		"allow" in filterSettings &&
-		"deny" in filterSettings
-	) {
+	if (typeof filterSettings === "object" && "allow" in filterSettings && "deny" in filterSettings) {
 		filter = (props) => {
 			if (filterSettings.allow) {
-				if (
-					filterSettings.allow.find((obj) => props?.[obj] === undefined) !==
-					undefined
-				) {
+				if (filterSettings.allow.find((obj) => props?.[obj] === undefined) !== undefined) {
 					return false;
 				}
 			}
 
 			if (filterSettings.deny) {
-				if (
-					filterSettings.deny.find((obj) => props?.[obj] !== undefined) !==
-					undefined
-				) {
+				if (filterSettings.deny.find((obj) => props?.[obj] !== undefined) !== undefined) {
 					return false;
 				}
 			}

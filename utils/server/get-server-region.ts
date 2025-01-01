@@ -13,9 +13,7 @@ function isPrivateIP(ip: string): boolean {
 	return privateRanges.some((range) => range.test(ip));
 }
 
-export async function getServerRegion(
-	address: string | undefined,
-): Promise<{ country: string; location: string }> {
+export async function getServerRegion(address: string | undefined): Promise<{ country: string; location: string }> {
 	if (!address) return { country: "N/A", location: "Unknown" };
 	if (isPrivateIP(address)) return { country: "N/A", location: "Unknown" };
 

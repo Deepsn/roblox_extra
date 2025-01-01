@@ -1,10 +1,5 @@
 import type { MessengersProtocol } from "@/utils/messaging/protocols";
-import type {
-	GetDataType,
-	GetReturnType,
-	MaybePromise,
-	RemoveListenerCallback,
-} from "@webext-core/messaging";
+import type { GetDataType, GetReturnType, MaybePromise, RemoveListenerCallback } from "@webext-core/messaging";
 
 function createMessageExchangeIds(type: string) {
 	const messageId = `RE_${type}`;
@@ -23,24 +18,22 @@ export function sendMessagesOnInjected<T extends keyof MessengersProtocol>(
 	const event = new CustomEvent(sendId, { detail: { data, key } });
 	const timeout = 5000; // timeout should be low
 
-	const promise = new Promise<GetReturnType<MessengersProtocol[T]>>(
-		(resolve, reject) => {
-			const receiveListener: EventListenerOrEventListenerObject = (_event) => {
-				const event = _event as CustomEvent<typeof promise>;
-				clearTimeout(timeoutId);
-				resolve(event.detail);
-			};
+	const promise = new Promise<GetReturnType<MessengersProtocol[T]>>((resolve, reject) => {
+		const receiveListener: EventListenerOrEventListenerObject = (_event) => {
+			const event = _event as CustomEvent<typeof promise>;
+			clearTimeout(timeoutId);
+			resolve(event.detail);
+		};
 
-			const timeoutId = setTimeout(() => {
-				document.removeEventListener(receiveId + key, receiveListener);
-				reject(new Error("Message exchange timed out"));
-			}, timeout);
+		const timeoutId = setTimeout(() => {
+			document.removeEventListener(receiveId + key, receiveListener);
+			reject(new Error("Message exchange timed out"));
+		}, timeout);
 
-			document.addEventListener(receiveId + key, receiveListener, {
-				once: true,
-			});
-		},
-	);
+		document.addEventListener(receiveId + key, receiveListener, {
+			once: true,
+		});
+	});
 
 	document.dispatchEvent(event);
 	return promise;
@@ -48,16 +41,11 @@ export function sendMessagesOnInjected<T extends keyof MessengersProtocol>(
 
 export function onMessagesFromInjected<T extends keyof MessengersProtocol>(
 	type: T,
-	onReceived: (
-		data: GetDataType<MessengersProtocol[T]>,
-	) => void | MaybePromise<GetReturnType<MessengersProtocol[T]>>,
+	onReceived: (data: GetDataType<MessengersProtocol[T]>) => void | MaybePromise<GetReturnType<MessengersProtocol[T]>>,
 ): RemoveListenerCallback {
 	const { sendId, receiveId } = createMessageExchangeIds(type);
 
-	const send = (
-		data: GetReturnType<MessengersProtocol[T]> | void,
-		key: string,
-	) => {
+	const send = (data: GetReturnType<MessengersProtocol[T]> | void, key: string) => {
 		const receiveEvent = new CustomEvent(receiveId + key, { detail: data });
 		document.dispatchEvent(receiveEvent);
 	};

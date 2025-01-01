@@ -4,7 +4,5 @@ export interface ServerRegion {
 }
 
 export interface ServerRegionProtocol {
-	getServerRegion(data: { placeId: string; gameId: string }):
-		| ServerRegion
-		| undefined;
+	getServerRegion(data: { placeId: string; gameId: string }): ServerRegion | undefined;
 }

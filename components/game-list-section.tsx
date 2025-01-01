@@ -1,16 +1,10 @@
 import { GameInstanceCard } from "@/components/game-instance-card";
-import {
-	type ExtendedServerOptions,
-	ServerListOptions,
-} from "@/components/server-list-options";
+import { type ExtendedServerOptions, ServerListOptions } from "@/components/server-list-options";
 import type { ServerInstance } from "@/types/games";
 import type { ConstructorHook } from "@/utils/react/types/hook";
 import { gameInstanceConstants } from "@/utils/server/constants/resources";
 
-export const GameListSection: ConstructorHook["callback"] = (
-	element,
-	props,
-) => {
+export const GameListSection: ConstructorHook["callback"] = (element, props) => {
 	// const [props] = args;
 	const {
 		gameInstances,
@@ -41,16 +35,14 @@ export const GameListSection: ConstructorHook["callback"] = (
 	const itemContainerId = `rbx-${cssKey}game-server-item-container`;
 
 	const displayedGameInstances = useMemo<ServerInstance[]>(() => {
-		const extraGameInstances = gameInstances.length % 2;
-		if (extraGameInstances > 0 && showLoadMoreButton) {
-			return gameInstances.slice(0, -1 * extraGameInstances);
-		}
+		// const extraGameInstances = gameInstances.length % 2;
+		// if (extraGameInstances > 0 && showLoadMoreButton) {
+		// 	return gameInstances.slice(0, -1 * extraGameInstances);
+		// }
 		return gameInstances;
 	}, [gameInstances, showLoadMoreButton]);
 
-	const [options, setOptions] = useState<Partial<ExtendedServerOptions>>(
-		gameInstanceConstants.defaultOptions,
-	);
+	const [options, setOptions] = useState<Partial<ExtendedServerOptions>>(gameInstanceConstants.defaultOptions);
 
 	useEffect(() => {
 		refreshGameInstances?.(options);
@@ -59,12 +51,7 @@ export const GameListSection: ConstructorHook["callback"] = (
 	return (
 		<>
 			<SystemFeedback />
-			<div
-				id={id}
-				className="stack server-list-section"
-				data-placeid={placeId}
-				data-showshutdown
-			>
+			<div id={id} className="stack server-list-section" data-placeid={placeId} data-showshutdown>
 				{headerTitle && (
 					<div className="container-header">
 						<div className="server-list-container-header">
@@ -79,9 +66,7 @@ export const GameListSection: ConstructorHook["callback"] = (
 								size={Button.sizes.extraSmall}
 								variant={Button.variants.control}
 							>
-								{translate(
-									gameInstanceConstants.resources.privateServerRefreshText,
-								) || "Refresh"}
+								{translate(gameInstanceConstants.resources.privateServerRefreshText) || "Refresh"}
 							</Button>
 						</div>
 						{type === "" && (
@@ -103,8 +88,7 @@ export const GameListSection: ConstructorHook["callback"] = (
 					<div className="section-content-off empty-game-instances-container">
 						<p className="no-servers-message">
 							{loadingError
-								? translate(gameInstanceConstants.resources.loadServersError) ||
-									"Unable to load servers."
+								? translate(gameInstanceConstants.resources.loadServersError) || "Unable to load servers."
 								: translate(gameInstanceConstants.resources.noServersFoundText)}
 						</p>
 					</div>
@@ -145,13 +129,10 @@ export const GameListSection: ConstructorHook["callback"] = (
 											canManagePlace: userCanManagePlace,
 											cssKey,
 											currentPlayersCount: playing || players.length,
-											gameServerStatus: translate(
-												gameInstanceConstants.resources.playerCountText,
-												{
-													currentPlayers: playing || players.length,
-													maximumAllowedPlayers: maxPlayers,
-												},
-											),
+											gameServerStatus: translate(gameInstanceConstants.resources.playerCountText, {
+												currentPlayers: playing || players.length,
+												maximumAllowedPlayers: maxPlayers,
+											}),
 											id: instanceId,
 											isLoading,
 											maxPlayers,
@@ -164,9 +145,7 @@ export const GameListSection: ConstructorHook["callback"] = (
 											players,
 											serverListType: type,
 											setIsLoading,
-											showSlowGameMessage:
-												(pfs as number) <
-												gameInstanceConstants.slowGameFpsThreshold,
+											showSlowGameMessage: (pfs as number) < gameInstanceConstants.slowGameFpsThreshold,
 											systemFeedbackService,
 											translate,
 											vipServerId,
@@ -189,9 +168,7 @@ export const GameListSection: ConstructorHook["callback"] = (
 									variant={Button.variants.control}
 									width={Button.widths.full}
 								>
-									{translate(
-										gameInstanceConstants.resources.loadMoreButtonText,
-									)}
+									{translate(gameInstanceConstants.resources.loadMoreButtonText)}
 								</Button>
 							)}
 						</div>

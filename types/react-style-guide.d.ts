@@ -41,11 +41,7 @@ interface Components {
 	useSystemFeedback: useSystemFeedback;
 }
 
-type IsStrictAny<T> = unknown extends T
-	? T extends object
-		? true
-		: false
-	: false;
+type IsStrictAny<T> = unknown extends T ? (T extends object ? true : false) : false;
 type WithReactElement<T> = {
 	[K in keyof T]: IsStrictAny<T[K]> extends true
 		? ((...args: any[]) => ReactElement) & {

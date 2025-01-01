@@ -21,16 +21,9 @@ export async function getThumbnails(thumbnailQuery: IThumbnailQuery[]) {
 	for (const query of thumbnailQuery) {
 		const queryId = query.id;
 		const size = query.size ?? RobloxThumbnails.DefaultThumbnailSize;
-		const type =
-			query.type ?? RobloxThumbnails.ThumbnailTypes.avatarHeadshot;
+		const type = query.type ?? RobloxThumbnails.ThumbnailTypes.avatarHeadshot;
 
-		const thumbnailResponse =
-			await RobloxThumbnails.thumbnailService.getThumbnailImage(
-				type,
-				size,
-				null,
-				queryId,
-			);
+		const thumbnailResponse = await RobloxThumbnails.thumbnailService.getThumbnailImage(type, size, null, queryId);
 
 		responseData.push({
 			id: queryId,
