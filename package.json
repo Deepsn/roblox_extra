@@ -14,13 +14,11 @@
 		"compile": "tsc --noEmit",
 		"postinstall": "wxt prepare"
 	},
+	"trustedDependencies": ["spawn-sync"],
 	"devDependencies": {
 		"@types/jquery": "^3.5.31",
 		"typescript": "^5.5.4",
-		"wxt": "^0.19.1"
-	},
-	"trustedDependencies": ["spawn-sync"],
-	"devdependencies": {
+		"wxt": "^0.19.1",
 		"@biomejs/biome": "^1.9.2",
 		"@types/react": "^18.3.10",
 		"@types/react-dom": "^18.3.0"
