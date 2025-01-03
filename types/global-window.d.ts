@@ -51,11 +51,17 @@ export declare global {
 	}
 
 	interface RobloxExtra {
+		ObjectDefineHooks: { key: string; callback: (...args: any[]) => void }[];
 		ReactRegistry: {
 			ConstructorsHooks: ConstructorHook[];
 		};
 		WebpackRegistry: {
 			Chunks: Chunk[];
+		};
+		MUIRegistry: {
+			Components: {
+				[key: string]: any;
+			};
 		};
 	}
 }

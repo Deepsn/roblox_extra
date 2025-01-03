@@ -6,21 +6,26 @@ import { waitForObject } from "@/utils/wait-for-object";
 export default defineUnlistedScript(async () => {
 	// Setups RobloxExtra global, used for sharing context between scripts
 	window.RobloxExtra = {
+		ObjectDefineHooks: [],
 		ReactRegistry: {
 			ConstructorsHooks: [],
 		},
 		WebpackRegistry: {
 			Chunks: [],
 		},
+		MUIRegistry: {
+			Components: {},
+		},
 	};
+
+	await waitForObject(window, "React");
+
+	console.log("react version loaded:", React.version);
+	linkReactUtils();
 
 	await waitForObject(window, "Roblox");
 
 	disableDevtoolsWarning();
-
-	await waitForObject(window, "React");
-
-	linkReactUtils();
 
 	// React style guide
 	await waitForObject(window, "ReactStyleGuide");

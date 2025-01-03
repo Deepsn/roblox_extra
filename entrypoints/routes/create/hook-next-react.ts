@@ -33,4 +33,12 @@ export function hookNextReact() {
 			hookFunction(chunk, "jsxs" as string, hook);
 		},
 	);
+
+	hookChunk(
+		(chunk) => "useState" in chunk && "useCallback" in chunk,
+		(chunk) => {
+			console.log("React chunk", chunk);
+			window.React = chunk as unknown as typeof React;
+		},
+	);
 }
