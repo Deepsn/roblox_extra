@@ -4,11 +4,17 @@ export function waitForObject<T, K extends keyof T>(object: T, objectName: K): P
 			return resolve(object[objectName]);
 		}
 
+		const lastHandler = Object.getOwnPropertyDescriptor(object, objectName);
+
 		Object.defineProperty(object, objectName, {
 			enumerable: false,
 			configurable: true,
 			set: (value) => {
 				delete object[objectName];
+				if (lastHandler) {
+					// Return the original handler
+					Object.defineProperty(object, objectName, lastHandler);
+				}
 				resolve(value);
 				object[objectName] = value;
 			},
