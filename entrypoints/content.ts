@@ -23,14 +23,14 @@ export default defineContentScript({
 
 				return resource.resources.some((subresource) => subresource === path);
 			});
-			if (!found) return;
+			if (!found) return console.warn("could not find", path);
 
 			return injectScript(path as ScriptPublicPath);
 		};
 
 		await inject("route-all.js");
 		if (hostname !== "") await inject(`route-${hostname}-all.js`);
-		if (pathname !== "") await inject(`route-${hostname}-${pathname}.js`);
+		if (pathname !== "") await inject(`route${hostname !== "" ? "-" : ""}${hostname}-${pathname}.js`);
 
 		console.log("injected\n", `hostname: ${hostname}\n`, `pathname: ${pathname}`);
 	},
