@@ -6,7 +6,7 @@ import { waitForObject } from "@/utils/wait-for-object";
 export default defineUnlistedScript(async () => {
 	// Setups RobloxExtra global, used for sharing context between scripts
 	window.RobloxExtra = {
-		ObjectDefineHooks: [],
+		ObjectDefineHooks: new Map(),
 		ReactRegistry: {
 			ConstructorsHooks: [],
 		},
