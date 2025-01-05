@@ -4,6 +4,14 @@ import type { ReactUtilities as _ReactUtilities } from "@/types/react-utilities"
 import type { RobloxThumbnails as _RobloxThumbnails } from "@/types/roblox-thumbnails";
 import type { Chunk } from "@/utils/next/types/chunk-hook";
 import type { ConstructorHook } from "@/utils/react/types/hook";
+import type { Components } from "@mui/material";
+import type * as Mui from "@mui/material";
+
+type MuiComponentsType = {
+	[K in keyof typeof Mui]: (typeof Mui)[K];
+};
+
+type WithoutMUIPrefix<T> = T extends `Mui${infer U}` ? U : never;
 
 export declare global {
 	const Roblox: Roblox;
@@ -60,7 +68,7 @@ export declare global {
 		};
 		MUIRegistry: {
 			Components: {
-				[key: string]: any;
+				[key in WithoutMUIPrefix<keyof Components>]: MuiComponentsType[key];
 			};
 		};
 	}
