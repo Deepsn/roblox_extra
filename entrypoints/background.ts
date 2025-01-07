@@ -59,4 +59,10 @@ export default defineBackground(() => {
 
 		return region;
 	});
+
+	onMessage("createExplorerTab", async (message) => {
+		await browser.tabs.create({
+			url: browser.runtime.getURL(`/explorer.html?assetId=${message.data}`),
+		});
+	});
 });

@@ -8,5 +8,9 @@ export default defineContentScript({
 		onMessagesFromInjected("getServerRegion", ({ placeId, gameId }) => {
 			return sendMessage("getServerRegion", { placeId, gameId });
 		});
+
+		onMessagesFromInjected("createExplorerTab", (data) => {
+			return sendMessage("createExplorerTab", data);
+		});
 	},
 });
