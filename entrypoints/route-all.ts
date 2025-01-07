@@ -14,7 +14,8 @@ export default defineUnlistedScript(async () => {
 			Chunks: [],
 		},
 		MUIRegistry: {
-			Components: {},
+			// Will be filled by the MUI hook
+			Components: {} as any,
 		},
 	};
 
