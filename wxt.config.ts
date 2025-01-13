@@ -34,7 +34,12 @@ export default defineConfig({
 	vite: () => ({
 		plugins: [wasm(), topLevelAwait(), vsixPlugin()],
 		optimizeDeps: {
-			exclude: ["@codingame/monaco-vscode-theme-defaults-default-extension"],
+			exclude: [
+				"@codingame/monaco-vscode-theme-defaults-default-extension",
+				"@codingame/monaco-vscode-theme-seti-default-extension",
+				"@codingame/monaco-vscode-json-default-extension",
+				"@codingame/monaco-vscode-json-language-features-default-extension",
+			],
 			include: ["vscode-textmate", "vscode-oniguruma"],
 		},
 	}),
