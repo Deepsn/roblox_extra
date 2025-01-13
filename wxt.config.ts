@@ -1,4 +1,7 @@
+import vsixPlugin from "@codingame/monaco-vscode-rollup-vsix-plugin";
 import { readdirSync } from "node:fs";
+import topLevelAwait from "vite-plugin-top-level-await";
+import wasm from "vite-plugin-wasm";
 import { defineConfig } from "wxt";
 
 const routes = readdirSync("./entrypoints/")
@@ -7,6 +10,7 @@ const routes = readdirSync("./entrypoints/")
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
+	modules: ["@wxt-dev/module-vue"],
 	hooks: {
 		"build:manifestGenerated": (wxt, manifest) => {
 			if (wxt.config.mode === "development") {
@@ -27,4 +31,11 @@ export default defineConfig({
 			host_permissions: ["*://*.roblox.com/*", "*://*.rbxcdn.com/"],
 		};
 	},
+	vite: () => ({
+		plugins: [wasm(), topLevelAwait(), vsixPlugin()],
+		optimizeDeps: {
+			exclude: ["@codingame/monaco-vscode-theme-defaults-default-extension"],
+			include: ["vscode-textmate", "vscode-oniguruma"],
+		},
+	}),
 });

@@ -113,9 +113,9 @@ export const RunningGameServers: ConstructorHook["callback"] = (target, self, ar
 		getServerInstances(placeId, cursor, options, false);
 
 	return (
-		<>
+		<React.Fragment>
 			<SystemFeedback />
 			{Reflect.apply(target, self, args)}
-		</>
+		</React.Fragment>
 	);
 };
