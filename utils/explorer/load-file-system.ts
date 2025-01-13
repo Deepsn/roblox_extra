@@ -7,30 +7,24 @@ import {
 import * as monaco from "monaco-editor";
 import * as vscode from "vscode";
 
-export const workspaceFile = monaco.Uri.file("/workspace.code-workspace");
+export const workspaceFile = monaco.Uri.file("/workspace");
 
 export function loadFileSystem() {
 	const fsProvider = new RegisteredFileSystemProvider(false);
 
 	loadDummyFiles(fsProvider);
-
 	registerFileSystemOverlay(1, fsProvider);
+
+	return fsProvider;
 }
 
 function loadDummyFiles(provider: RegisteredFileSystemProvider) {
 	provider.registerFile(
 		new RegisteredMemoryFile(
-			vscode.Uri.file("/test/test.js"),
-			`// import anotherfile
-    let variable = 1
-    function inc () {
-      variable++
-    }
-    
-    while (variable < 5000) {
-      inc()
-      console.log('Hello world', variable);
-    }`,
+			vscode.Uri.file("/asset/test.luau"),
+			`local test = 123
+print(test + 321)
+print(math.huge)`,
 		),
 	);
 
@@ -40,7 +34,7 @@ function loadDummyFiles(provider: RegisteredFileSystemProvider) {
 			JSON.stringify(<IStoredWorkspace>{
 				folders: [
 					{
-						path: "/test",
+						path: "/asset",
 					},
 				],
 			}),
