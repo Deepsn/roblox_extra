@@ -12,4 +12,12 @@ export const constructOptions: IWorkbenchConstructionOptions = {
 	configurationDefaults: {
 		"window.title": "Explorer",
 	},
+	defaultLayout: {
+		views: [
+			{
+				id: "explorer",
+			},
+		],
+		force: true,
+	},
 };
