@@ -1,4 +1,4 @@
-import { workspaceFile } from "@/utils/explorer/load-file-system";
+import { workspaceUri } from "@/utils/explorer/file-system";
 import type { IWorkbenchConstructionOptions } from "vscode/services";
 
 export const constructOptions: IWorkbenchConstructionOptions = {
@@ -6,7 +6,7 @@ export const constructOptions: IWorkbenchConstructionOptions = {
 		trusted: true,
 		open: async () => false,
 		workspace: {
-			workspaceUri: workspaceFile,
+			workspaceUri,
 		},
 	},
 	configurationDefaults: {

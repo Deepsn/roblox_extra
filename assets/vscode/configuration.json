@@ -1,4 +1,5 @@
 {
 	"workbench.colorTheme": "Default Dark+",
-	"workbench.iconTheme": "vs-seti"
+	"workbench.iconTheme": "vs-seti",
+	"explorer.compactFolders": false
 }

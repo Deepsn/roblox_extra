@@ -50,6 +50,7 @@
 		"@codingame/monaco-vscode-notifications-service-override": "^11.1.2",
 		"@codingame/monaco-vscode-preferences-service-override": "^11.1.2",
 		"@codingame/monaco-vscode-rollup-vsix-plugin": "^11.1.2",
+		"@codingame/monaco-vscode-storage-service-override": "^11.1.2",
 		"@codingame/monaco-vscode-textmate-service-override": "^11.1.2",
 		"@codingame/monaco-vscode-theme-defaults-default-extension": "^11.1.2",
 		"@codingame/monaco-vscode-theme-service-override": "^11.1.2",
