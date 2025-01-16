@@ -6,7 +6,6 @@ import {
 	registerFileSystemOverlay,
 } from "@codingame/monaco-vscode-files-service-override";
 import * as monaco from "monaco-editor";
-import * as vscode from "vscode";
 
 export const assetFolderPath = "/asset";
 export const workspaceUri = monaco.Uri.file("/workspace");
@@ -36,12 +35,10 @@ export async function loadInstancesOnFileSystem(filesystem: RegisteredFileSystem
 		const uri = instance.getUri();
 		let contents: string | undefined;
 
-		if (instance.source) {
-			contents = instance.source;
-		} else {
-			if (instance.name !== "root" && instance.children.size === 0) {
-				contents = "unsupported";
-			}
+		if (instance.properties.has("Source")) {
+			contents = instance.properties.get("Source") as string;
+		} else if (instance.children.size === 0) {
+			contents = "unsupported";
 		}
 
 		if (contents) {

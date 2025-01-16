@@ -5,21 +5,25 @@ type InstanceTypes = "instance" | "luacontainer";
 
 export interface InstanceData {
 	name: string;
-
-	source?: string;
+	properties: Map<string, { [key: string]: unknown }>;
 	children?: InstanceData[];
+	class: string;
 }
 
 export class Instance {
-	public name: string;
-
-	public source?: string;
-	public parent?: Instance;
+	public properties = new Map<string, unknown>();
 	public children = new Set<Instance>();
 
+	public parent?: Instance;
+
 	constructor(data: InstanceData) {
-		this.name = data.name;
-		this.source = data.source;
+		for (const [key, value] of data.properties.entries()) {
+			const valueKey = Object.keys(value)[0];
+			this.properties.set(key, value[valueKey]);
+		}
+
+		this.properties.set("Name", data.name);
+		this.properties.set("ClassName", data.class);
 
 		for (const child of data.children ?? []) {
 			const childInstance = new Instance(child);
@@ -29,7 +33,7 @@ export class Instance {
 	}
 
 	public getFileType() {
-		if (this.source) return ".luau";
+		if (this.properties.has("Source")) return ".luau";
 		return "";
 	}
 
@@ -38,9 +42,12 @@ export class Instance {
 	}
 
 	public getFullPath(): string {
+		const name = this.properties.get("Name") as string;
+
 		if (this.parent) {
-			return `${this.parent.getFullPath()}/${this.name}`;
+			return `${this.parent.getFullPath()}/${name}`;
 		}
-		return this.name;
+
+		return name;
 	}
 }

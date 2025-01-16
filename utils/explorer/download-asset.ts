@@ -1,35 +1,8 @@
 import { Instance } from "@/utils/explorer/instance";
+import { parse_asset } from "explorer-parser-wasm";
 
-// TODO: actually download/parse assets using wasm
-export function downloadAsset(assetId: string): Instance {
-	return new Instance({
-		name: "root",
-		children: [
-			{
-				name: "test",
-				source: "local test = 123123123",
-			},
-			{
-				name: "Part",
-			},
-			{
-				name: "Folder",
-				children: [
-					{
-						name: "SubFolder",
-						children: [
-							{
-								name: "SubSubFolder",
-								children: [
-									{
-										name: "SubSubSubFolder",
-									},
-								],
-							},
-						],
-					},
-				],
-			},
-		],
-	});
+export async function downloadAsset(assetId: string): Promise<Instance> {
+	const instanceData = await parse_asset(assetId);
+
+	return new Instance(instanceData);
 }

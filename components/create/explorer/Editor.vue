@@ -11,11 +11,10 @@ import type * as monaco from 'monaco-editor';
 
 import userConfiguration from "@/assets/vscode/configuration.json?raw";
 import { downloadAsset } from "@/utils/explorer/download-asset";
+import { loadFileSystem, loadInstancesOnFileSystem } from "@/utils/explorer/file-system";
 import { initializeMonacoEnvironment } from "@/utils/explorer/initialize-monaco-env";
 import { initializeMonacoServices } from "@/utils/explorer/initialize-monaco-services";
-import { loadFileSystem, loadInstancesOnFileSystem } from "@/utils/explorer/file-system";
 import type { RegisteredFileSystemProvider } from "@codingame/monaco-vscode-files-service-override";
-import * as vscode from "vscode";
 import type { IStandaloneCodeEditor } from "vscode/vscode/vs/editor/standalone/browser/standaloneCodeEditor";
 
 const editorElRef = useTemplateRef("editor-ref");
@@ -42,8 +41,10 @@ onMounted(async () => {
         return;
     }
 
-    const asset = downloadAsset(assetId);
+    const asset = await downloadAsset(assetId);
     loadInstancesOnFileSystem(filesystem.value, asset);
+
+    document.title = `Explorer - ${assetId}`;
 })
 
 onUnmounted(() => {
