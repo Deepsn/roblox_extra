@@ -21,6 +21,9 @@ export default defineConfig({
 	manifest: () => {
 		return {
 			name: "Roblox extra",
+			content_security_policy: {
+				extension_pages: "script-src 'self' 'wasm-unsafe-eval'",
+			},
 			web_accessible_resources: [
 				{
 					resources: routes,
@@ -32,6 +35,12 @@ export default defineConfig({
 		};
 	},
 	vite: () => ({
+		worker: {
+			format: "es",
+		},
+		build: {
+			target: "ES2022",
+		},
 		plugins: [wasm(), topLevelAwait(), vsixPlugin()],
 		optimizeDeps: {
 			exclude: [
