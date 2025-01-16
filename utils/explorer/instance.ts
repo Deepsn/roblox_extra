@@ -8,6 +8,7 @@ export interface InstanceData {
 	properties: Map<string, { [key: string]: unknown }>;
 	children?: InstanceData[];
 	class: string;
+	referent: string;
 }
 
 export class Instance {
@@ -24,6 +25,7 @@ export class Instance {
 
 		this.properties.set("Name", data.name);
 		this.properties.set("ClassName", data.class);
+		this.properties.set("Ref", data.referent);
 
 		for (const child of data.children ?? []) {
 			const childInstance = new Instance(child);
@@ -43,7 +45,6 @@ export class Instance {
 
 	public getFullPath(): string {
 		const name = this.properties.get("Name") as string;
-
 		if (this.parent) {
 			return `${this.parent.getFullPath()}/${name}`;
 		}

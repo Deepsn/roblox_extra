@@ -31,7 +31,7 @@ export function loadFileSystem() {
 }
 
 export async function loadInstancesOnFileSystem(filesystem: RegisteredFileSystemProvider, assetInstance: Instance) {
-	function recursiveLoad(instance: Instance) {
+	async function recursiveLoad(instance: Instance) {
 		const uri = instance.getUri();
 		let contents: string | undefined;
 
@@ -42,7 +42,15 @@ export async function loadInstancesOnFileSystem(filesystem: RegisteredFileSystem
 		}
 
 		if (contents) {
-			filesystem.registerFile(new RegisteredMemoryFile(uri, contents));
+			try {
+				filesystem.registerFile(new RegisteredMemoryFile(uri, contents));
+			} catch (error) {
+				if (error instanceof Error && error.message.includes("already exists")) {
+					console.log("Duplicated file", uri.toString());
+					instance.properties.set("Name", `${instance.properties.get("Name")} (${instance.properties.get("Ref")})`);
+					recursiveLoad(instance);
+				}
+			}
 		}
 
 		if (instance.children) {
@@ -52,5 +60,5 @@ export async function loadInstancesOnFileSystem(filesystem: RegisteredFileSystem
 		}
 	}
 
-	recursiveLoad(assetInstance);
+	await recursiveLoad(assetInstance);
 }
