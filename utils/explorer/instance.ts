@@ -34,7 +34,7 @@ export class Instance {
 
 	public getFileType() {
 		if (this.properties.has("Source")) return ".luau";
-		return "";
+		return `.${this.properties.get("ClassName")}`;
 	}
 
 	public getUri() {
