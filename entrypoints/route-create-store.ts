@@ -6,7 +6,7 @@ export default defineUnlistedScript(async () => {
 
 	hookConstructor(
 		(props) => {
-			return !!props?.assetId && !!props.assetName && !!props.assetTypeId && props.showDeleteSnackbar !== undefined;
+			return !!props?.assetId && !!props.assetName && !!props.assetTypeId;
 		},
 		(element, props) => {
 			element.props.children.push(ExplorerButton(props));
