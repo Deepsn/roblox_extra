@@ -1,4 +1,4 @@
-import { storage } from "wxt/storage";
+import { storage } from "wxt/utils/storage";
 
 interface ServerInfo {
 	machineAddress: string;
@@ -39,27 +39,35 @@ async function saveToCache(placeId: string, gameId: string, value: ServerInfo) {
 	await storage.setItem(`local:${placeId}`, instances);
 }
 
-export async function getServerInfo(placeId: string, gameId: string): Promise<ServerInfo | undefined> {
+export async function getServerInfo(
+	placeId: string,
+	gameId: string,
+): Promise<ServerInfo | undefined> {
 	const serverInfoFromCache = await getFromCache(placeId, gameId);
 
 	if (serverInfoFromCache) {
 		return serverInfoFromCache;
 	}
 
-	const response = await fetch("https://gamejoin.roblox.com/v1/join-game-instance", {
-		method: "POST",
-		headers: {
-			"content-type": "application/json",
-			"user-agent": "Roblox/WinInet",
+	const response = await fetch(
+		"https://gamejoin.roblox.com/v1/join-game-instance",
+		{
+			method: "POST",
+			headers: {
+				"content-type": "application/json",
+				"user-agent": "Roblox/WinInet",
+			},
+			body: JSON.stringify({ placeId, gameId }),
 		},
-		body: JSON.stringify({ placeId, gameId }),
-	});
+	);
 
 	const success = response.headers.has("Vary");
 	if (!success) return;
 
 	const json = await response.json();
-	const machineAddress = json?.joinScript?.UdmuxEndpoints?.[0]?.Address ?? json?.joinScript?.MachineAddress;
+	const machineAddress =
+		json?.joinScript?.UdmuxEndpoints?.[0]?.Address ??
+		json?.joinScript?.MachineAddress;
 	if (!machineAddress) return;
 
 	const serverInfo = {

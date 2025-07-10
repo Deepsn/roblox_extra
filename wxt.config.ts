@@ -41,7 +41,7 @@ export default defineConfig({
 		build: {
 			target: "ES2022",
 		},
-		plugins: [wasm(), topLevelAwait(), vsixPlugin()],
+		plugins: [wasm(), vsixPlugin()],
 		optimizeDeps: {
 			exclude: [
 				"@codingame/monaco-vscode-theme-defaults-default-extension",

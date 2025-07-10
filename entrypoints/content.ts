@@ -1,8 +1,12 @@
-import { type ScriptPublicPath, injectScript } from "wxt/client";
+import { injectScript, type ScriptPublicPath } from "wxt/utils/inject-script";
 
 export default defineContentScript({
 	matches: ["*://*.roblox.com/*"],
-	excludeMatches: ["*://*/userads/*", "*://*/user-sponsorship/*", "*://*/build/upload"],
+	excludeMatches: [
+		"*://*/userads/*",
+		"*://*/user-sponsorship/*",
+		"*://*/build/upload",
+	],
 	runAt: "document_start",
 	async main() {
 		const manifest = browser.runtime.getManifest();
@@ -30,8 +34,15 @@ export default defineContentScript({
 
 		await inject("route-all.js");
 		if (hostname !== "") await inject(`route-${hostname}-all.js`);
-		if (pathname !== "") await inject(`route${hostname !== "" ? "-" : ""}${hostname}-${pathname}.js`);
+		if (pathname !== "")
+			await inject(
+				`route${hostname !== "" ? "-" : ""}${hostname}-${pathname}.js`,
+			);
 
-		console.log("injected\n", `hostname: ${hostname}\n`, `pathname: ${pathname}`);
+		console.log(
+			"injected\n",
+			`hostname: ${hostname}\n`,
+			`pathname: ${pathname}`,
+		);
 	},
 });
