@@ -1,4 +1,6 @@
 export function linkReactUtils() {
+	console.log("react version loaded:", React.version);
+
 	const internals = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
 	const dispatcher = internals.ReactCurrentDispatcher;
 	let current = dispatcher.current;

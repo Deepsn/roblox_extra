@@ -11,7 +11,14 @@ interface Roblox {
 		commas: (n: number) => string;
 	};
 	EnvironmentUrls: {
-		[key: `${string}Api` | `${string}Link` | `${string}ApiSite` | `${string}Url` | "domain"]: string;
+		[
+			key:
+				| `${string}Api`
+				| `${string}Link`
+				| `${string}ApiSite`
+				| `${string}Url`
+				| "domain"
+		]: string;
 	};
 	GameDetail: {
 		UniverseId: number;
@@ -20,6 +27,12 @@ interface Roblox {
 		joinGameInstance: (placeId: number, gameId: string) => void;
 	};
 	browserDoNotTrack: boolean;
+	BundleVerifierConstants: {
+		isMetricApiEnabled: boolean;
+	};
+	BundleDetector: {
+		jsBundlesLoaded: { [K: string]: boolean };
+	};
 }
 
 interface User {

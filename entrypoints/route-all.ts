@@ -1,3 +1,5 @@
+import { hookBundles } from "@/utils/bundle/hook-bundles";
+import { waitForBundle } from "@/utils/bundle/wait-for-bundle";
 import { disableDevtoolsWarning } from "@/utils/features/disable-devtools-warning";
 import { linkReactUtils } from "@/utils/features/link-react-utils";
 import { hookReact } from "@/utils/react/hook-react";
@@ -19,17 +21,13 @@ export default defineUnlistedScript(async () => {
 		},
 	};
 
-	await waitForObject(window, "React");
+	await hookBundles();
 
-	console.log("react version loaded:", React.version);
+	waitForBundle("leanbase").then(disableDevtoolsWarning);
+
+	await waitForBundle("React");
+
 	linkReactUtils();
 
-	await waitForObject(window, "Roblox");
-
-	disableDevtoolsWarning();
-
-	// React style guide
-	await waitForObject(window, "ReactStyleGuide");
-
-	hookReact();
+	waitForBundle("ReactStyleGuide").then(hookReact);
 });
