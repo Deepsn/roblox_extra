@@ -3,7 +3,6 @@ import { waitForBundle } from "@/utils/bundle/wait-for-bundle";
 import { disableDevtoolsWarning } from "@/utils/features/disable-devtools-warning";
 import { linkReactUtils } from "@/utils/features/link-react-utils";
 import { hookReact } from "@/utils/react/hook-react";
-import { waitForObject } from "@/utils/wait-for-object";
 
 export default defineUnlistedScript(async () => {
 	// Setups RobloxExtra global, used for sharing context between scripts
@@ -19,6 +18,7 @@ export default defineUnlistedScript(async () => {
 			// Will be filled by the MUI hook
 			Components: {} as any,
 		},
+		JSBundleCallbacks: new Map<string, Set<() => void>>(),
 	};
 
 	await hookBundles();
@@ -28,6 +28,5 @@ export default defineUnlistedScript(async () => {
 	await waitForBundle("React");
 
 	linkReactUtils();
-
-	waitForBundle("ReactStyleGuide").then(hookReact);
+	hookReact();
 });

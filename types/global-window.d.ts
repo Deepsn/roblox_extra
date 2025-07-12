@@ -59,7 +59,10 @@ export declare global {
 	}
 
 	interface RobloxExtra {
-		ObjectDefineHooks: Map<string, { key: string; callback: (...args: any[]) => void }[]>;
+		ObjectDefineHooks: Map<
+			string,
+			{ key: string; callback: (...args: any[]) => void }[]
+		>;
 		ReactRegistry: {
 			ConstructorsHooks: ConstructorHook[];
 		};
@@ -71,5 +74,6 @@ export declare global {
 				[key in WithoutMUIPrefix<keyof Components>]: MuiComponentsType[key];
 			};
 		};
+		JSBundleCallbacks: Map<string, Set<() => void>>;
 	}
 }

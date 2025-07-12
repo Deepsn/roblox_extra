@@ -4,7 +4,5 @@ export async function waitForBundle(name: string) {
 	await waitForObject(window, "Roblox");
 	await waitForObject(Roblox, "BundleDetector");
 
-	return new Promise<void>((resolve) => {
-		listenForBundle(name, resolve);
-	});
+	return new Promise<void>((resolve) => listenForBundle(name, resolve));
 }

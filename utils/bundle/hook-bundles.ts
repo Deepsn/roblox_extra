@@ -1,7 +1,5 @@
 import { disableMetricApi } from "@/utils/features/disable-metric-api";
 
-const jsBundlesLoaded = new Map<string, Set<() => void>>();
-
 export async function hookBundles() {
 	await waitForObject(window, "Roblox");
 	disableMetricApi();
@@ -11,15 +9,18 @@ export async function hookBundles() {
 	Roblox.BundleDetector.jsBundlesLoaded = watchChanges(
 		Roblox.BundleDetector.jsBundlesLoaded,
 		(_, key) => {
-			console.log("jsBundlesLoaded changed:", key);
-
-			const callbacks = jsBundlesLoaded.get(key);
+			const callbacks = RobloxExtra.JSBundleCallbacks.get(key);
 			if (!callbacks) return;
+
+			console.log(
+				`%cBundle loaded: ${key}`,
+				"background-color: orange; color: black; font-weight: bold",
+			);
 
 			for (const callback of callbacks) {
 				callback();
 			}
-			jsBundlesLoaded.delete(key);
+			RobloxExtra.JSBundleCallbacks.delete(key);
 		},
 	);
 }
@@ -30,8 +31,10 @@ export function listenForBundle(name: string, callback: () => void) {
 		return;
 	}
 
-	if (!jsBundlesLoaded.has(name)) {
-		jsBundlesLoaded.set(name, new Set());
+	const jsBundleCallbacks = RobloxExtra.JSBundleCallbacks;
+
+	if (!jsBundleCallbacks.has(name)) {
+		jsBundleCallbacks.set(name, new Set());
 	}
-	jsBundlesLoaded.get(name)?.add(callback);
+	jsBundleCallbacks.get(name)?.add(callback);
 }
