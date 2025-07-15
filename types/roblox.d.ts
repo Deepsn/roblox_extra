@@ -33,6 +33,7 @@ interface Roblox {
 	BundleDetector: {
 		jsBundlesLoaded: { [K: string]: boolean };
 	};
+	ui: WebBlox;
 }
 
 interface User {
