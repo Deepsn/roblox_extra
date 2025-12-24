@@ -1,15 +1,15 @@
 import vsixPlugin from "@codingame/monaco-vscode-rollup-vsix-plugin";
 import { readdirSync } from "node:fs";
-import topLevelAwait from "vite-plugin-top-level-await";
 import wasm from "vite-plugin-wasm";
 import { defineConfig } from "wxt";
 
-const routes = readdirSync("./entrypoints/")
+const routes = readdirSync("./src/entrypoints/")
 	.filter((route) => route.includes("route-"))
 	.map((route) => route.replace(".ts", ".js").replace("jsx", "js"));
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
+	srcDir: "src",
 	modules: ["@wxt-dev/module-vue"],
 	hooks: {
 		"build:manifestGenerated": (wxt, manifest) => {
