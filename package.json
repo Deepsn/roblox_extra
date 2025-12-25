@@ -34,7 +34,7 @@
 		"typescript": "^5.8.3",
 		"vite-plugin-wasm": "^3.5.0",
 		"vue-tsc": "^3.0.1",
-		"wxt": "^0.20.7"
+		"wxt": "^0.20.13"
 	},
 	"dependencies": {
 		"@codingame/monaco-vscode-base-service-override": "^16.0.4",
