@@ -23,7 +23,8 @@ export default defineUnlistedScript(async () => {
 
 	await hookBundles();
 
-	waitForBundle("leanbase").then(disableDevtoolsWarning);
+	// todo: make this optional on settings
+	disableDevtoolsWarning();
 
 	await waitForBundle("React");
 
