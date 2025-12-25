@@ -1,6 +1,6 @@
+import type { ReactElement } from "react";
 import { hookFunction } from "@/utils/hook-function";
 import { onCreateElement } from "@/utils/react/on-create-element";
-import type { ReactElement } from "react";
 
 export function hookReact() {
 	hookFunction(React, "createElement", (createElement, react, args) => {

@@ -1,5 +1,5 @@
-import { assetFolderPath } from "@/utils/explorer/file-system";
 import * as vscode from "vscode";
+import { assetFolderPath } from "@/utils/explorer/file-system";
 
 type InstanceTypes = "instance" | "luacontainer";
 

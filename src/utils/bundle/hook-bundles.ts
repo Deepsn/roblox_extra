@@ -6,23 +6,17 @@ export async function hookBundles() {
 
 	await waitForObject(Roblox, "BundleDetector");
 
-	Roblox.BundleDetector.jsBundlesLoaded = watchChanges(
-		Roblox.BundleDetector.jsBundlesLoaded,
-		(_, key) => {
-			const callbacks = RobloxExtra.JSBundleCallbacks.get(key);
-			if (!callbacks) return;
+	Roblox.BundleDetector.jsBundlesLoaded = watchChanges(Roblox.BundleDetector.jsBundlesLoaded, (_, key) => {
+		const callbacks = RobloxExtra.JSBundleCallbacks.get(key);
+		if (!callbacks) return;
 
-			console.log(
-				`%cBundle loaded: ${key}`,
-				"background-color: orange; color: black; font-weight: bold",
-			);
+		console.log(`%cBundle loaded: ${key}`, "background-color: orange; color: black; font-weight: bold");
 
-			for (const callback of callbacks) {
-				callback();
-			}
-			RobloxExtra.JSBundleCallbacks.delete(key);
-		},
-	);
+		for (const callback of callbacks) {
+			callback();
+		}
+		RobloxExtra.JSBundleCallbacks.delete(key);
+	});
 }
 
 export function listenForBundle(name: string, callback: () => void) {

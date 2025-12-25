@@ -1,6 +1,8 @@
 export function PlayerThumbnailContainer({
 	player,
-}: { player: { playerToken: string; displayName: string; id: string } }) {
+}: {
+	player: { playerToken: string; displayName: string; id: string };
+}) {
 	const { Link } = ReactStyleGuide;
 	const { Thumbnail2d, ThumbnailTypes } = RobloxThumbnails;
 	const { urlService } = CoreUtilities;

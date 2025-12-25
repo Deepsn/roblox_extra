@@ -1,5 +1,5 @@
-import type { ReactProps } from "@/utils/react/types/hook";
 import type { JSXElementConstructor, ReactElement } from "react";
+import type { ReactProps } from "@/utils/react/types/hook";
 
 const constructorProxies = new Map<any, { [key: string]: any }>();
 
@@ -10,7 +10,7 @@ export function onCreateElement(
 	if (!(props instanceof Object)) return;
 	if (props?.internal !== undefined) return;
 
-	let render: ((...args: any[]) => ReactElement | unknown) | JSXElementConstructor<any> | undefined = undefined;
+	let render: ((...args: any[]) => ReactElement | unknown) | JSXElementConstructor<any> | undefined;
 
 	if (typeof type === "function") {
 		render = type;

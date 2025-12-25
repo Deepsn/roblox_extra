@@ -59,10 +59,7 @@ export declare global {
 	}
 
 	interface RobloxExtra {
-		ObjectDefineHooks: Map<
-			string,
-			{ key: string; callback: (...args: any[]) => void }[]
-		>;
+		ObjectDefineHooks: Map<string, { key: string; callback: (...args: any[]) => void }[]>;
 		ReactRegistry: {
 			ConstructorsHooks: ConstructorHook[];
 		};

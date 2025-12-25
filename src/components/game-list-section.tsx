@@ -22,8 +22,6 @@ export const GameListSection: ConstructorHook["callback"] = (element, props) => 
 		userCanManagePlace,
 	} = props;
 
-	if (type !== "") return;
-
 	const { createSystemFeedback, Loading, Button } = ReactStyleGuide;
 	const [SystemFeedback, systemFeedbackService] = createSystemFeedback();
 	const cssKey = type ? `${type}-` : "";
@@ -47,6 +45,8 @@ export const GameListSection: ConstructorHook["callback"] = (element, props) => 
 	useEffect(() => {
 		refreshGameInstances?.(options);
 	}, [options]);
+
+	if (type !== "") return;
 
 	return (
 		<>
@@ -121,40 +121,45 @@ export const GameListSection: ConstructorHook["callback"] = (element, props) => 
 										ping,
 									}: ServerInstance,
 									index,
-								) => (
-									<GameInstanceCard
-										key={instanceId}
-										{...{
-											accessCode,
-											canManagePlace: userCanManagePlace,
-											cssKey,
-											currentPlayersCount: playing || players.length,
-											gameServerStatus: translate(gameInstanceConstants.resources.playerCountText, {
-												currentPlayers: playing || players.length,
-												maximumAllowedPlayers: maxPlayers,
-											}),
-											id: instanceId,
-											isLoading,
-											maxPlayers,
-											name,
-											onShutdownServerSuccess: () => {
-												handleGameInstanceShutdownAtIndex(index);
-											},
-											owner,
-											placeId,
-											players,
-											serverListType: type,
-											setIsLoading,
-											showSlowGameMessage: (pfs as number) < gameInstanceConstants.slowGameFpsThreshold,
-											systemFeedbackService,
-											translate,
-											vipServerId,
-											vipServerSubscription,
-											fps,
-											ping,
-										}}
-									/>
-								),
+								) => {
+									// Return if not checking public servers
+									if (type !== "") return undefined;
+
+									return (
+										<GameInstanceCard
+											key={instanceId}
+											{...{
+												accessCode,
+												canManagePlace: userCanManagePlace,
+												cssKey,
+												currentPlayersCount: playing || players.length,
+												gameServerStatus: translate(gameInstanceConstants.resources.playerCountText, {
+													currentPlayers: playing || players.length,
+													maximumAllowedPlayers: maxPlayers,
+												}),
+												id: instanceId,
+												isLoading,
+												maxPlayers,
+												name,
+												onShutdownServerSuccess: () => {
+													handleGameInstanceShutdownAtIndex(index);
+												},
+												owner,
+												placeId,
+												players,
+												serverListType: type,
+												setIsLoading,
+												showSlowGameMessage: (pfs as number) < gameInstanceConstants.slowGameFpsThreshold,
+												systemFeedbackService,
+												translate,
+												vipServerId,
+												vipServerSubscription,
+												fps,
+												ping,
+											}}
+										/>
+									);
+								},
 							)}
 						</ul>
 

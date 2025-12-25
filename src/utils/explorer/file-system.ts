@@ -1,4 +1,3 @@
-import type { Instance } from "@/utils/explorer/instance";
 import type { IStoredWorkspace } from "@codingame/monaco-vscode-configuration-service-override";
 import {
 	RegisteredFileSystemProvider,
@@ -6,6 +5,7 @@ import {
 	registerFileSystemOverlay,
 } from "@codingame/monaco-vscode-files-service-override";
 import * as monaco from "monaco-editor";
+import type { Instance } from "@/utils/explorer/instance";
 
 export const assetFolderPath = "/asset";
 export const workspaceUri = monaco.Uri.file("/workspace");

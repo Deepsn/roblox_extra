@@ -6,11 +6,9 @@ import getPreferencesServiceOverride from "@codingame/monaco-vscode-preferences-
 import getTextMateServiceOverride from "@codingame/monaco-vscode-textmate-service-override";
 import getThemeServiceOverride from "@codingame/monaco-vscode-theme-service-override";
 import getWorkbenchServiceOverride from "@codingame/monaco-vscode-workbench-service-override";
-
-import { initialize as initializeServices } from "vscode/services";
-
-import { constructOptions } from "@/utils/explorer/construct-options";
 import type * as monaco from "monaco-editor";
+import { initialize as initializeServices } from "vscode/services";
+import { constructOptions } from "@/utils/explorer/construct-options";
 
 export async function initializeMonacoServices(container: HTMLElement) {
 	const services: monaco.editor.IEditorOverrideServices = {

@@ -1,7 +1,7 @@
+import type { ReactElement } from "react";
 import { hookChunk } from "@/utils/next/hook-chunk";
 import type { Chunk, Module } from "@/utils/next/types/chunk-hook";
 import { onCreateElement } from "@/utils/react/on-create-element";
-import type { ReactElement } from "react";
 
 export function hookNextReact() {
 	const hook = (createElement: (...args: [Module]) => any, react: Chunk, args: [Module]) => {

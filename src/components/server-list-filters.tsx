@@ -1,6 +1,6 @@
+import type { Dispatch, SetStateAction } from "react";
 import { Icon } from "@/components/icon";
 import type { ExtendedServerOptions } from "@/components/server-list-options";
-import type { Dispatch, SetStateAction } from "react";
 import FilterIcon from "~/assets/icons/filter.svg";
 import PersonRemoveIcon from "~/assets/icons/person_remove.svg";
 import WifiIcon from "~/assets/icons/wifi.svg";

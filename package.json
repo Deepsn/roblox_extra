@@ -5,6 +5,8 @@
 	"version": "0.1.0",
 	"type": "module",
 	"scripts": {
+		"lint": "biome lint",
+		"fix": "biome check --fix",
 		"dev": "wxt",
 		"dev:firefox": "wxt -b firefox",
 		"build": "wxt build",

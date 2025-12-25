@@ -1,5 +1,5 @@
-import { workspaceUri } from "@/utils/explorer/file-system";
 import type { IWorkbenchConstructionOptions } from "vscode/services";
+import { workspaceUri } from "@/utils/explorer/file-system";
 
 export const constructOptions: IWorkbenchConstructionOptions = {
 	workspaceProvider: {

@@ -1,5 +1,5 @@
-import type { MessengersProtocol } from "@/utils/messaging/protocols";
 import type { GetDataType, GetReturnType, MaybePromise, RemoveListenerCallback } from "@webext-core/messaging";
+import type { MessengersProtocol } from "@/utils/messaging/protocols";
 
 function createMessageExchangeIds(type: string) {
 	const messageId = `RE_${type}`;

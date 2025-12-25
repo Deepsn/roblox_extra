@@ -1,7 +1,4 @@
-export function watchChanges(
-	object: object,
-	callback: (value: any, property: string) => void,
-) {
+export function watchChanges(object: object, callback: (value: any, property: string) => void) {
 	const handler = {
 		set(target: any, property: string, value: any) {
 			target[property] = value;

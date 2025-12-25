@@ -30,12 +30,11 @@ export function GameInstanceCard({
 	currentPlayersCount,
 	ping,
 	fps,
-}: { [key: string]: any }) {
+}: {
+	[key: string]: any;
+}) {
 	const { Tooltip } = ReactStyleGuide;
 	const [serverRegion, setServerRegion] = useState<ServerRegion>();
-
-	// Return if not checking public servers
-	if (serverListType !== "") return;
 
 	function handleServerJoin() {
 		Roblox.GameLauncher.joinGameInstance(placeId, id);
@@ -134,16 +133,9 @@ export function GameInstanceCard({
 					}}
 				>
 					<div className="player-thumbnails-container" style={{ maxWidth: "none", alignSelf: "auto" }}>
-						{players.map(
-							(player: {
-								playerToken: string;
-								displayName: string;
-								id: string;
-								name: string;
-							}) => (
-								<PlayerThumbnailContainer key={player.playerToken} player={player} />
-							),
-						)}
+						{players.map((player: { playerToken: string; displayName: string; id: string; name: string }) => (
+							<PlayerThumbnailContainer key={player.playerToken} player={player} />
+						))}
 						{!!remainingPlayersText && (
 							<span className="avatar avatar-headshot-sm player-avatar hidden-players-placeholder">
 								{remainingPlayersText}

@@ -1,5 +1,5 @@
-import vsixPlugin from "@codingame/monaco-vscode-rollup-vsix-plugin";
 import { readdirSync } from "node:fs";
+import vsixPlugin from "@codingame/monaco-vscode-rollup-vsix-plugin";
 import wasm from "vite-plugin-wasm";
 import { defineConfig } from "wxt";
 
