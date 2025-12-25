@@ -1,4 +1,4 @@
-import { injectScript, type ScriptPublicPath } from "wxt/utils/inject-script";
+import type { ScriptPublicPath } from "wxt/utils/inject-script";
 
 export default defineContentScript({
 	matches: ["*://*.roblox.com/*"],
@@ -15,7 +15,7 @@ export default defineContentScript({
 			hostname = "";
 		}
 
-		const inject = (path: ScriptPublicPath | string) => {
+		const inject = async (path: ScriptPublicPath | string) => {
 			const found = webAccessibleResources.some((resource) => {
 				if (typeof resource === "string") {
 					return resource === path;
@@ -25,7 +25,12 @@ export default defineContentScript({
 			});
 			if (!found) return console.warn("could not find", path);
 
-			return injectScript(path as ScriptPublicPath);
+			return injectScript(path as ScriptPublicPath, {
+				modifyScript(script) {
+					// Fixes scripts sometimes being delayed when injected
+					script.async = false;
+				},
+			});
 		};
 
 		await inject("route-all.js");
