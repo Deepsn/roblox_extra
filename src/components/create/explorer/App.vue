@@ -2,7 +2,7 @@
     setup
     lang="tsx"
 >
-import Editor from "./Editor.vue";
+
 </script>
 
 <template>
