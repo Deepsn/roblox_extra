@@ -23,7 +23,7 @@
 		"vue-demi"
 	],
 	"devDependencies": {
-		"@biomejs/biome": "^2.1.1",
+		"@biomejs/biome": "^2.3.10",
 		"@types/jquery": "^3.5.31",
 		"@types/react": "^18.3.10",
 		"@types/react-dom": "^18.3.0",
