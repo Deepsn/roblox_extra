@@ -1,11 +1,11 @@
+import type * as Mui from "@mui/material";
+import type { Components } from "@mui/material";
 import type { CoreUtilities as _CoreUtilities } from "@/types/core-utilities";
 import type { ReactStyleGuide as _RobloxStyleGuide } from "@/types/react-style-guide";
 import type { ReactUtilities as _ReactUtilities } from "@/types/react-utilities";
 import type { RobloxThumbnails as _RobloxThumbnails } from "@/types/roblox-thumbnails";
 import type { Chunk } from "@/utils/next/types/chunk-hook";
 import type { ConstructorHook } from "@/utils/react/types/hook";
-import type * as Mui from "@mui/material";
-import type { Components } from "@mui/material";
 
 type MuiComponentsType = {
 	[K in keyof typeof Mui]: (typeof Mui)[K];

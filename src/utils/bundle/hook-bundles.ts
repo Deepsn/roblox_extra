@@ -10,8 +10,6 @@ export async function hookBundles() {
 		const callbacks = RobloxExtra.JSBundleCallbacks.get(key);
 		if (!callbacks) return;
 
-		console.log(`%cBundle loaded: ${key}`, "background-color: orange; color: black; font-weight: bold");
-
 		for (const callback of callbacks) {
 			callback();
 		}
@@ -19,9 +17,9 @@ export async function hookBundles() {
 	});
 }
 
-export function listenForBundle(name: string, callback: () => void) {
+export function listenForBundle(name: string, callback: (loadReason: string) => void) {
 	if (Roblox.BundleDetector.jsBundlesLoaded[name]) {
-		callback();
+		callback("already_loaded");
 		return;
 	}
 
@@ -30,5 +28,5 @@ export function listenForBundle(name: string, callback: () => void) {
 	if (!jsBundleCallbacks.has(name)) {
 		jsBundleCallbacks.set(name, new Set());
 	}
-	jsBundleCallbacks.get(name)?.add(callback);
+	jsBundleCallbacks.get(name)?.add(() => callback("loaded"));
 }
