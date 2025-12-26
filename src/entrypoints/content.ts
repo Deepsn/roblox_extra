@@ -33,9 +33,13 @@ export default defineContentScript({
 			});
 		};
 
-		await inject("route-all.js");
-		if (hostname !== "") await inject(`route-${hostname}-all.js`);
-		if (pathname !== "") await inject(`route${hostname !== "" ? "-" : ""}${hostname}-${pathname}.js`);
+		const injectall = Promise.all([
+			inject("route-all.js"),
+			hostname !== "" ? inject(`route-${hostname}-all.js`) : undefined,
+			pathname !== "" ? inject(`route${hostname !== "" ? "-" : ""}${hostname}-${pathname}.js`) : undefined,
+		]);
+
+		await injectall;
 
 		console.log("injected\n", `hostname: ${hostname}\n`, `pathname: ${pathname}`);
 	},
