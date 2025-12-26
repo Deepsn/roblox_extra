@@ -1,4 +1,7 @@
 import type { ScriptPublicPath } from "wxt/utils/inject-script";
+import { Logger } from "@/utils/helpers/logger";
+
+const logger = new Logger("Injector", "#6eafdbff");
 
 export default defineContentScript({
 	matches: ["*://*.roblox.com/*"],
@@ -23,7 +26,7 @@ export default defineContentScript({
 
 				return resource.resources.some((subresource) => subresource === path);
 			});
-			if (!found) return console.warn("could not find", path);
+			if (!found) return logger.warn("could not find", path);
 
 			return injectScript(path as ScriptPublicPath, {
 				modifyScript(script) {
@@ -41,6 +44,6 @@ export default defineContentScript({
 
 		await injectall;
 
-		console.log("injected\n", `hostname: ${hostname}\n`, `pathname: ${pathname}`);
+		logger.log("injected\n", `hostname: "${hostname}"\n`, `pathname: "${pathname}"`);
 	},
 });
