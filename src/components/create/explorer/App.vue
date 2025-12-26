@@ -2,6 +2,8 @@
     setup
     lang="tsx"
 >
+import Editor from '@/components/create/explorer/Editor.vue';
+
 
 </script>
 
