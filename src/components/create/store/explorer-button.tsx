@@ -10,16 +10,14 @@ interface ExplorerProps {
 }
 
 export function ExplorerButton({ assetId }: ExplorerProps) {
-	const { MenuItem } = RobloxExtra.MUIRegistry.Components;
-
 	async function handleExplorerClick() {
 		console.log("clicked", assetId);
 		sendMessagesOnInjected("createExplorerTab", assetId);
 	}
 
 	return (
-		<MenuItem component={"button"} onClick={handleExplorerClick} style={{ margin: "0 12px 0 0", padding: "12px" }}>
+		<button type="button" onClick={handleExplorerClick} style={{ margin: "0 12px 0 0", padding: "12px" }}>
 			TEST {assetId}
-		</MenuItem>
+		</button>
 	);
 }
