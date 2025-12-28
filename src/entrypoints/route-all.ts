@@ -3,26 +3,14 @@ import { waitForBundle } from "@/utils/bundle/wait-for-bundle";
 import { disableDevtoolsWarning } from "@/utils/features/disable-devtools-warning";
 import { linkReactUtils } from "@/utils/features/link-react-utils";
 import { lockConsole } from "@/utils/helpers/logger";
+import { setupRobloxExtra } from "@/utils/helpers/roblox-extra";
 import { hookReact } from "@/utils/react/hook-react";
 
 export default defineUnlistedScript(async () => {
 	lockConsole();
 
 	// Setups RobloxExtra global, used for sharing context between scripts
-	window.RobloxExtra = {
-		ObjectDefineHooks: new Map(),
-		ReactRegistry: {
-			ConstructorsHooks: [],
-		},
-		WebpackRegistry: {
-			Chunks: [],
-		},
-		MUIRegistry: {
-			// Will be filled by the MUI hook
-			Components: {} as any,
-		},
-		JSBundleCallbacks: new Map<string, Set<() => void>>(),
-	};
+	setupRobloxExtra();
 
 	await hookBundles();
 
