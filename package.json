@@ -53,13 +53,14 @@
 		"@codingame/monaco-vscode-theme-seti-default-extension": "^16.0.4",
 		"@codingame/monaco-vscode-workbench-service-override": "^16.0.4",
 		"@mui/material": "^6.3.0",
-		"@webext-core/messaging": "^1.4.0",
 		"@vencord/discord-types": "^1.0.0",
+		"@webext-core/messaging": "^1.4.0",
 		"alien-signals": "^3.1.2",
 		"monaco-editor": "npm:@codingame/monaco-vscode-editor-api",
 		"r-extra-explorer-parser-wasm": "^0.1.0",
 		"react": "=18.3.1",
 		"react-dom": "=18.3.1",
+		"react-innertext": "^1.1.5",
 		"vscode": "npm:@codingame/monaco-vscode-api",
 		"vue": "^3.5.17"
 	}

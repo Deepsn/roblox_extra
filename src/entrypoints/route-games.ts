@@ -1,4 +1,4 @@
-import { DefaultPlayButton } from "@/components/default-play-button";
+import innerText from "react-innertext";
 import { GameListSection } from "@/components/game-list-section";
 import { RunningGameServers } from "@/components/running-game-servers";
 import { waitForBundle } from "@/utils/bundle/wait-for-bundle";
@@ -9,5 +9,16 @@ export default defineUnlistedScript(async () => {
 
 	hookConstructor((props) => !!props?.loadMoreGameInstances, GameListSection);
 	hookConstructor((props) => !!props?.getGameServers, RunningGameServers, true);
-	hookConstructor((props) => !!props?.playabilityStatus, DefaultPlayButton);
+
+	// Remove download prompt
+	hookConstructor(
+		(props) => !!props?.download && !!props?.launchGame && !!props?.unmount,
+		(element, props) => {
+			if (innerText(element).includes("Download Roblox")) {
+				props.unmount();
+			}
+
+			return element;
+		},
+	);
 });
