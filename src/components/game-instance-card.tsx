@@ -4,8 +4,6 @@ import { useAsyncEffect } from "@/hooks/use-async-effect";
 import { sendMessagesOnInjected } from "@/utils/messaging/injected";
 import type { ServerRegion } from "@/utils/messaging/server-info";
 import ContentCopyIcon from "~/assets/icons/content_copy.svg";
-import ControllerIcon from "~/assets/icons/controller.svg";
-import InfoIcon from "~/assets/icons/info.svg";
 
 export function GameInstanceCard({
 	id,
@@ -57,101 +55,130 @@ export function GameInstanceCard({
 	const remainingPlayersText = currentPlayersCount - players.length > 0 && `+${currentPlayersCount - players.length}`;
 
 	return (
-		<li className={`rbx-${cssKey}game-server-item`} style={{ width: "calc(50% - 6px)" }}>
+		<li className={`rbx-${cssKey}game-server-item`} style={{ width: "calc(25% - 10px)" }}>
 			<div
 				className="card-item"
 				style={{
 					minHeight: "auto",
 					margin: 0,
-					flexDirection: "row",
-					justifyContent: "flex-start",
-					gap: "6px",
+					padding: "12px",
+					display: "flex",
+					flexDirection: "column",
+					gap: "10px",
 				}}
 			>
 				<div
-					data-placeid={placeId}
-					style={{
-						width: "7%",
-						display: "flex",
-						flexDirection: "column",
-						justifyContent: "space-evenly",
-						alignItems: "center",
-						marginLeft: "12px",
-						marginRight: "12px",
-					}}
-				>
-					<button
-						style={{
-							border: "none",
-							background: "none",
-							padding: 0,
-						}}
-						onClick={handleServerJoin}
-						disabled={isLoading}
-						type="button"
-					>
-						<Icon width={20} height={20} url={ControllerIcon} alt="play server" />
-					</button>
-
-					<span style={{ border: "none", background: "none", padding: 0 }}>
-						<Tooltip
-							content={
-								<div>
-									<p>Ping: {ping}</p>
-									<p>Load: {100 - Math.floor((fps / 60) * 100)}%</p>
-								</div>
-							}
-							placement="bottom"
-						>
-							<Icon width={20} height={20} url={InfoIcon} alt="server info" />
-						</Tooltip>
-					</span>
-
-					<button
-						style={{
-							border: "none",
-							background: "none",
-							padding: 0,
-						}}
-						onClick={handleCopyId}
-						disabled={isLoading}
-						type="button"
-					>
-						<Tooltip content={<p>Copy game id</p>} placement="bottom">
-							<Icon width={20} height={20} url={ContentCopyIcon} alt="copy id" />
-						</Tooltip>
-					</button>
-				</div>
-
-				<div
 					style={{
 						display: "flex",
-						width: "100%",
-						padding: "0 6px 0 6px",
-						flexDirection: "column",
-						rowGap: "12px",
+						justifyContent: "space-between",
+						alignItems: "flex-start",
+						fontSize: "12px",
+						lineHeight: "1.2",
 					}}
 				>
-					<div className="player-thumbnails-container" style={{ maxWidth: "none", alignSelf: "auto" }}>
-						{players.map((player: { playerToken: string; displayName: string; id: string; name: string }) => (
-							<PlayerThumbnailContainer key={player.playerToken} player={player} />
-						))}
-						{!!remainingPlayersText && (
-							<span className="avatar avatar-headshot-sm player-avatar hidden-players-placeholder">
-								{remainingPlayersText}
+					<div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+						{serverRegion ? (
+							<span className="text-secondary" style={{ fontWeight: 600 }}>
+								{serverRegion.location}, {serverRegion.country}
 							</span>
+						) : (
+							<span className="text-secondary">Loading region...</span>
 						)}
 					</div>
 
-					<div>
-						<p>{gameServerStatus}</p>
-						{serverRegion ? <p>{`${serverRegion.location} - ${serverRegion.country}`}</p> : <p>Unknown - N/A</p>}
+					<div style={{ textAlign: "right", display: "flex", gap: "8px", alignItems: "center" }}>
+						{ping !== undefined && (
+							<span className={ping > 200 ? "text-error" : "text-secondary"} title="Ping">
+								{ping} ms
+							</span>
+						)}
+						{fps !== undefined && (
+							<span className="text-secondary" title="Server FPS">
+								{Math.round(fps)} FPS
+							</span>
+						)}
 					</div>
 				</div>
-			</div>
 
-			<div className="server-player-count-gauge border" style={{ margin: 0, border: "none" }}>
-				<div className="gauge-inner-bar border" style={{ width: `${percent}%` }} />
+				<div
+					className="player-thumbnails-container"
+					style={{ maxWidth: "none", flexWrap: "wrap", gap: "4px", alignContent: "flex-start" }}
+				>
+					{players.map((player: { playerToken: string; displayName: string; id: string; name: string }) => (
+						<PlayerThumbnailContainer key={player.playerToken} player={player} />
+					))}
+					{!!remainingPlayersText && (
+						<span className="avatar avatar-headshot-sm player-avatar hidden-players-placeholder">
+							{remainingPlayersText}
+						</span>
+					)}
+				</div>
+
+				{gameServerStatus && (
+					<div className="text-secondary" style={{ fontSize: "16px" }}>
+						{gameServerStatus}
+					</div>
+				)}
+
+				<div style={{ marginTop: "auto", width: "100%" }}>
+					<div
+						style={{
+							marginBottom: "8px",
+							height: "6px",
+							backgroundColor: "rgba(128, 128, 128, 0.2)",
+							borderRadius: "3px",
+							overflow: "hidden",
+							width: "100%",
+						}}
+						title={`${percent}% Full`}
+					>
+						<div
+							style={{
+								width: `${percent}%`,
+								height: "100%",
+								backgroundColor: percent > 90 ? "#d9534f" : percent > 60 ? "#f0ad4e" : "#5cb85c",
+							}}
+						/>
+					</div>
+
+					<div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+						<button
+							className="btn-growth-md btn-primary-md"
+							style={{
+								flex: 1,
+								fontSize: "14px",
+								padding: "4px 0",
+								height: "32px",
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center",
+							}}
+							onClick={handleServerJoin}
+							disabled={isLoading}
+							type="button"
+						>
+							Join
+						</button>
+
+						<button
+							className="btn-control-md"
+							style={{
+								width: "32px",
+								height: "32px",
+								padding: 0,
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center",
+							}}
+							onClick={handleCopyId}
+							type="button"
+						>
+							<Tooltip content="Copy Job ID" placement="top">
+								<Icon width={16} height={16} url={ContentCopyIcon} alt="copy id" />
+							</Tooltip>
+						</button>
+					</div>
+				</div>
 			</div>
 		</li>
 	);

@@ -33,10 +33,10 @@ export const GameListSection: ConstructorHook["callback"] = (element, props) => 
 	const itemContainerId = `rbx-${cssKey}game-server-item-container`;
 
 	const displayedGameInstances = useMemo<ServerInstance[]>(() => {
-		// const extraGameInstances = gameInstances.length % 2;
-		// if (extraGameInstances > 0 && showLoadMoreButton) {
-		// 	return gameInstances.slice(0, -1 * extraGameInstances);
-		// }
+		const extraGameInstances = gameInstances.length % 4;
+		if (extraGameInstances > 0 && showLoadMoreButton) {
+			return gameInstances.slice(0, -1 * extraGameInstances);
+		}
 		return gameInstances;
 	}, [gameInstances, showLoadMoreButton]);
 
