@@ -1,10 +1,10 @@
 import { hookBundles } from "@/utils/bundle/hook-bundles";
 import { waitForBundle } from "@/utils/bundle/wait-for-bundle";
 import { disableDevtoolsWarning } from "@/utils/features/disable-devtools-warning";
-import { linkReactUtils } from "@/utils/features/link-react-utils";
-import { lockConsole } from "@/utils/helpers/logger";
+import { Logger, lockConsole } from "@/utils/helpers/logger";
 import { setupRobloxExtra } from "@/utils/helpers/roblox-extra";
 import { hookReact } from "@/utils/react/hook-react";
+import { linkReactUtils } from "@/utils/react/link-react-utils";
 
 export default defineUnlistedScript(async () => {
 	lockConsole();
@@ -18,6 +18,8 @@ export default defineUnlistedScript(async () => {
 	disableDevtoolsWarning();
 
 	await waitForBundle("React");
+
+	Logger.info("React", "version loaded:", React.version);
 
 	linkReactUtils();
 	hookReact();
