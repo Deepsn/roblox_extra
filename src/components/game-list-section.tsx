@@ -33,6 +33,7 @@ export const GameListSection: ConstructorHook["callback"] = (element, props) => 
 	const itemContainerId = `rbx-${cssKey}game-server-item-container`;
 
 	const displayedGameInstances = useMemo<ServerInstance[]>(() => {
+		if (gameInstances.length < 4) return gameInstances;
 		const extraGameInstances = gameInstances.length % 4;
 		if (extraGameInstances > 0 && showLoadMoreButton) {
 			return gameInstances.slice(0, -1 * extraGameInstances);
@@ -69,7 +70,7 @@ export const GameListSection: ConstructorHook["callback"] = (element, props) => 
 								{translate(gameInstanceConstants.resources.privateServerRefreshText) || "Refresh"}
 							</Button>
 						</div>
-						{type === "" && (
+						{type !== "" && (
 							<ServerListOptions
 								{...{
 									isLoading,
@@ -82,18 +83,7 @@ export const GameListSection: ConstructorHook["callback"] = (element, props) => 
 					</div>
 				)}
 
-				{isLoading ? (
-					<Loading />
-				) : emptyGameInstanceList ? (
-					<div className="section-content-off empty-game-instances-container">
-						<p className="no-servers-message">
-							{loadingError
-								? translate(gameInstanceConstants.resources.loadServersError) || "Unable to load servers."
-								: translate(gameInstanceConstants.resources.noServersFoundText)}
-						</p>
-					</div>
-				) : (
-					<>
+				<>
 						<ul
 							id={itemContainerId}
 							className={itemContainerClass}
@@ -163,7 +153,7 @@ export const GameListSection: ConstructorHook["callback"] = (element, props) => 
 							)}
 						</ul>
 
-						<div className={footerClass}>
+						{!emptyGameInstanceList && <div className={footerClass}>
 							{showLoadMoreButton && (
 								<Button
 									className="rbx-running-games-load-more"
@@ -176,8 +166,17 @@ export const GameListSection: ConstructorHook["callback"] = (element, props) => 
 									{translate(gameInstanceConstants.resources.loadMoreButtonText)}
 								</Button>
 							)}
-						</div>
+						</div>}
 					</>
+
+				{emptyGameInstanceList && (
+					<div className="section-content-off empty-game-instances-container">
+						<p className="no-servers-message">
+							{loadingError
+								? translate(gameInstanceConstants.resources.loadServersError) || "Unable to load servers."
+								: translate(gameInstanceConstants.resources.noServersFoundText)}
+						</p>
+					</div>
 				)}
 			</div>
 		</>
