@@ -1,10 +1,11 @@
+import type React from "react";
 import type { ReactElement } from "react";
-import { hookChunk } from "@/utils/next/hook-chunk";
-import type { Chunk, Module } from "@/utils/next/types/chunk-hook";
+import type ReactJSX from "react/jsx-runtime";
+import { hookChunk } from "@/utils/next/hook-webpack";
 import { onCreateElement } from "@/utils/react/on-create-element";
 
-export function hookNextReact() {
-	const hook = (createElement: (...args: [Module]) => any, react: Chunk, args: [Module]) => {
+export function hookReact() {
+	const hook = (createElement: (...args: any[]) => ReactElement, react: typeof ReactJSX, args: unknown[]) => {
 		const result = Reflect.apply(createElement, react, args) as ReactElement;
 
 		try {
@@ -25,19 +26,21 @@ export function hookNextReact() {
 		return result;
 	};
 
+	// 28538
 	hookChunk(
 		(chunk) => "jsx" in chunk && "jsxs" in chunk,
-		(chunk) => {
-			console.log("React chunk", chunk);
-			hookFunction(chunk, "jsx" as string, hook);
-			hookFunction(chunk, "jsxs" as string, hook);
+		(chunk, id) => {
+			console.log("React JSX chunk", chunk, id);
+			hookFunction(chunk, "jsx", hook);
+			hookFunction(chunk, "jsxs", hook);
 		},
 	);
 
+	// 91733
 	hookChunk(
 		(chunk) => "useState" in chunk && "useCallback" in chunk,
-		(chunk) => {
-			console.log("React chunk", chunk);
+		(chunk, id) => {
+			console.log("React chunk", chunk, id);
 			window.React = chunk as unknown as typeof React;
 		},
 	);
