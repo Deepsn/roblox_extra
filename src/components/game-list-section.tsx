@@ -46,7 +46,7 @@ export const GameListSection: ConstructorHook["callback"] = (element, props) => 
 		refreshGameInstances?.(options);
 	}, [options]);
 
-	if (type !== "") return;
+	if (type === "") return;
 
 	return (
 		<>
@@ -123,7 +123,7 @@ export const GameListSection: ConstructorHook["callback"] = (element, props) => 
 									index,
 								) => {
 									// Return if not checking public servers
-									if (type !== "") return undefined;
+									if (type === "") return undefined;
 
 									return (
 										<GameInstanceCard
