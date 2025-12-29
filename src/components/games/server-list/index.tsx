@@ -1,11 +1,11 @@
-import { GameInstanceCard } from "@/components/game-instance-card";
-import { type ExtendedServerOptions, ServerListOptions } from "@/components/server-list-options";
+import { type ExtendedServerOptions, ServerListOptions } from "@/components/games/server-list/options";
+import { ServerCard } from "@/components/games/server-list/server-card";
 import type { ServerInstance } from "@/types/games";
 import type { ConstructorHook } from "@/utils/react/types/hook";
 import { gameInstanceConstants } from "@/utils/server/constants/resources";
 
-export const GameListSection: ConstructorHook["callback"] = (element, props) => {
-	// const [props] = args;
+export const ServerListSection: ConstructorHook["callback"] = (...args) => {
+	const [, , [props]] = args;
 	const {
 		gameInstances,
 		handleGameInstanceShutdownAtIndex,
@@ -20,9 +20,9 @@ export const GameListSection: ConstructorHook["callback"] = (element, props) => 
 		translate,
 		type,
 		userCanManagePlace,
-	} = props;
+	} = props as Record<string, any>;
 
-	const { createSystemFeedback, Loading, Button } = ReactStyleGuide;
+	const { createSystemFeedback, Button } = ReactStyleGuide;
 	const [SystemFeedback, systemFeedbackService] = createSystemFeedback();
 	const cssKey = type ? `${type}-` : "";
 
@@ -72,102 +72,100 @@ export const GameListSection: ConstructorHook["callback"] = (element, props) => 
 						</div>
 						{type !== "" && (
 							<ServerListOptions
-								{...{
-									isLoading,
-									options,
-									setOptions,
-									translate,
-								}}
+								isLoading={isLoading}
+								options={options}
+								setOptions={setOptions}
+								translate={translate}
 							/>
 						)}
 					</div>
 				)}
 
-				<>
-						<ul
-							id={itemContainerId}
-							className={itemContainerClass}
-							style={{
-								display: "flex",
-								flexDirection: "column",
-								gap: "12px",
-								flexFlow: "wrap",
-							}}
-						>
-							{displayedGameInstances.map(
-								(
-									{
+				<ul
+					id={itemContainerId}
+					className={itemContainerClass}
+					style={{
+						display: "flex",
+						flexDirection: "column",
+						gap: "12px",
+						flexFlow: "wrap",
+					}}
+				>
+					{displayedGameInstances.map(
+						(
+							{
+								accessCode,
+								id: instanceId,
+								maxPlayers,
+								name,
+								owner,
+								pfs, // TODO(SHARE-414): Is this information that we actually get from the backend? Let's remove if not.
+								players,
+								playing,
+								vipServerId,
+								vipServerSubscription,
+								fps,
+								ping,
+							}: ServerInstance,
+							index,
+						) => {
+							// Return if not checking public servers
+							if (type === "") return undefined;
+
+							return (
+								<ServerCard
+									key={instanceId}
+									{...{
 										accessCode,
+										canManagePlace: userCanManagePlace,
+										cssKey,
+										currentPlayersCount: playing || players.length,
+										gameServerStatus: translate(gameInstanceConstants.resources.playerCountText, {
+											currentPlayers: playing || players.length,
+											maximumAllowedPlayers: maxPlayers,
+										}),
 										id: instanceId,
+										isLoading,
 										maxPlayers,
 										name,
+										onShutdownServerSuccess: () => {
+											handleGameInstanceShutdownAtIndex(index);
+										},
 										owner,
-										pfs, // TODO(SHARE-414): Is this information that we actually get from the backend? Let's remove if not.
+										placeId,
 										players,
-										playing,
+										serverListType: type,
+										setIsLoading,
+										showSlowGameMessage: (pfs as number) < gameInstanceConstants.slowGameFpsThreshold,
+										systemFeedbackService,
+										translate,
 										vipServerId,
 										vipServerSubscription,
 										fps,
 										ping,
-									}: ServerInstance,
-									index,
-								) => {
-									// Return if not checking public servers
-									if (type === "") return undefined;
+									}}
+								/>
+							);
+						},
+					)}
+				</ul>
 
-									return (
-										<GameInstanceCard
-											key={instanceId}
-											{...{
-												accessCode,
-												canManagePlace: userCanManagePlace,
-												cssKey,
-												currentPlayersCount: playing || players.length,
-												gameServerStatus: translate(gameInstanceConstants.resources.playerCountText, {
-													currentPlayers: playing || players.length,
-													maximumAllowedPlayers: maxPlayers,
-												}),
-												id: instanceId,
-												isLoading,
-												maxPlayers,
-												name,
-												onShutdownServerSuccess: () => {
-													handleGameInstanceShutdownAtIndex(index);
-												},
-												owner,
-												placeId,
-												players,
-												serverListType: type,
-												setIsLoading,
-												showSlowGameMessage: (pfs as number) < gameInstanceConstants.slowGameFpsThreshold,
-												systemFeedbackService,
-												translate,
-												vipServerId,
-												vipServerSubscription,
-												fps,
-												ping,
-											}}
-										/>
-									);
-								},
-							)}
-						</ul>
-
-						{!emptyGameInstanceList && <div className={footerClass}>
-							{showLoadMoreButton && (
-								<Button
-									className="rbx-running-games-load-more"
-									isDisabled={isLoading}
-									onClick={() => loadMoreGameInstances(options)}
-									type="button"
-									variant={Button.variants.control}
-									width={Button.widths.full}
-								>
-									{translate(gameInstanceConstants.resources.loadMoreButtonText)}
-								</Button>
-							)}
-						</div>}
-					</>
+				{!emptyGameInstanceList && (
+					<div className={footerClass}>
+						{showLoadMoreButton && (
+							<Button
+								className="rbx-running-games-load-more"
+								isDisabled={isLoading}
+								onClick={() => loadMoreGameInstances(options)}
+								type="button"
+								variant={Button.variants.control}
+								width={Button.widths.full}
+							>
+								{translate(gameInstanceConstants.resources.loadMoreButtonText)}
+							</Button>
+						)}
+					</div>
+				)}
 
 				{emptyGameInstanceList && (
 					<div className="section-content-off empty-game-instances-container">

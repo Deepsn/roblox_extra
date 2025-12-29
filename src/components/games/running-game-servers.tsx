@@ -1,4 +1,4 @@
-import type { ExtendedServerOptions } from "@/components/server-list-options";
+import type { ExtendedServerOptions } from "@/components/games/server-list/options";
 import type { ServerCursor, ServerInstance, ServerInstancesResponse } from "@/types/games";
 import { sendMessagesOnInjected } from "@/utils/messaging/injected";
 import type { ServerRegion } from "@/utils/messaging/server-info";

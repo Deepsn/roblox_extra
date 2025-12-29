@@ -1,13 +1,13 @@
 import innerText from "react-innertext";
-import { GameListSection } from "@/components/game-list-section";
-import { RunningGameServers } from "@/components/running-game-servers";
+import { RunningGameServers } from "@/components/games/running-game-servers";
+import { ServerListSection } from "@/components/games/server-list";
 import { waitForBundle } from "@/utils/bundle/wait-for-bundle";
 import { hookConstructor } from "@/utils/react/hook-constructor";
 
 export default defineUnlistedScript(async () => {
 	await waitForBundle("React");
 
-	hookConstructor((props) => !!props?.loadMoreGameInstances, GameListSection);
+	hookConstructor((props) => !!props?.loadMoreGameInstances, ServerListSection, true);
 	hookConstructor((props) => !!props?.getGameServers, RunningGameServers, true);
 
 	// Remove download prompt
