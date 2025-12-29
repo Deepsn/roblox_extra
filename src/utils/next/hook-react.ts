@@ -1,6 +1,5 @@
-import type React from "react";
-import type { ReactElement } from "react";
-import type ReactJSX from "react/jsx-runtime";
+import type { ReactElement } from "react-create";
+import type ReactJSX from "react-create/jsx-runtime";
 import { hookChunk } from "@/utils/next/hook-webpack";
 import { onCreateElement } from "@/utils/react/on-create-element";
 
@@ -41,7 +40,7 @@ export function hookReact() {
 		(chunk) => "useState" in chunk && "useCallback" in chunk,
 		(chunk, id) => {
 			console.log("React chunk", chunk, id);
-			window.React = chunk as unknown as typeof React;
+			window.React = chunk;
 		},
 	);
 }

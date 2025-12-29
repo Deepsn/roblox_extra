@@ -4,13 +4,21 @@ import type { ReactUtilities as _ReactUtilities } from "@/types/react-utilities"
 import type { RobloxThumbnails as _RobloxThumbnails } from "@/types/roblox-thumbnails";
 import type { ConstructorHook } from "@/utils/react/types/hook";
 
+type React = typeof import("react") & typeof import("react-create");
+
+type ExtractReactHooks<T = React> = {
+	[K in keyof T as K extends `use${string}` ? (T[K] extends (...args: any[]) => any ? K : never) : never]: T[K];
+};
+
+type ReactHooks = ExtractReactHooks<React>;
+
 export declare global {
 	const Roblox: Roblox;
-	const React: typeof import("react") & {
+	const React: React & {
 		__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: any;
 	};
 
-	const ReactJSX: typeof import("react/jsx-runtime");
+	const ReactJSX: typeof import("react/jsx-runtime") | typeof import("react-create/jsx-runtime");
 
 	const ReactStyleGuide: _RobloxStyleGuide;
 	const ReactUtilities: _ReactUtilities;
@@ -19,14 +27,14 @@ export declare global {
 	const RobloxThumbnails: _RobloxThumbnails;
 	const CoreUtilities: _CoreUtilities;
 
-	const useEffect: typeof import("react").useEffect;
-	const useLayoutEffect: typeof import("react").useLayoutEffect;
-	const useState: typeof import("react").useState;
-	const useCallback: typeof import("react").useCallback;
-	const useContext: typeof import("react").useContext;
-	const useMemo: typeof import("react").useMemo;
-	const useRef: typeof import("react").useRef;
-	const createContext: typeof import("react").createContext;
+	const useEffect: ReactHooks["useEffect"];
+	const useLayoutEffect: ReactHooks["useLayoutEffect"];
+	const useState: ReactHooks["useState"];
+	const useCallback: ReactHooks["useCallback"];
+	const useContext: ReactHooks["useContext"];
+	const useMemo: ReactHooks["useMemo"];
+	const useRef: ReactHooks["useRef"];
+	const createContext: React["createContext"];
 
 	interface Window {
 		RobloxExtra: RobloxExtra;
@@ -35,17 +43,18 @@ export declare global {
 		RobloxThumbnails: _RobloxThumbnails;
 		CoreUtilities: _CoreUtilities;
 		Roblox: Roblox;
-		React: typeof import("react");
-		ReactDOM: typeof import("react-dom");
+		React: React;
+		ReactDOM: typeof import("react-dom") & typeof import("react-dom-create");
 		ReactStyleGuide: _RobloxStyleGuide;
-		useEffect: typeof import("react").useEffect;
-		useLayoutEffect: typeof import("react").useLayoutEffect;
-		useState: typeof import("react").useState;
-		useCallback: typeof import("react").useCallback;
-		useContext: typeof import("react").useContext;
-		useMemo: typeof import("react").useMemo;
-		useRef: typeof import("react").useRef;
-		createContext: typeof import("react").createContext;
+
+		useEffect: React.useEffect;
+		useLayoutEffect: React.useLayoutEffect;
+		useState: React.useState;
+		useCallback: React.useCallback;
+		useContext: React.useContext;
+		useMemo: React.useMemo;
+		useRef: React.useRef;
+		createContext: React.createContext;
 
 		// create.roblox.com
 		webpackChunk_N_E: any;

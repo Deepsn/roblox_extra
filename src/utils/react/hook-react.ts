@@ -5,19 +5,22 @@ import { onCreateElement } from "@/utils/react/on-create-element";
 
 const logger = new Logger("ReactHook", "#61DAFB");
 
+// roblox.com react 17.0.2
+type React17 = typeof import("react");
+
 export function hookReact() {
 	const hookCreateElement = (
-		createElement: (typeof React)["createElement"] | (typeof ReactJSX)["jsx"] | (typeof ReactJSX)["jsxs"],
-		react: typeof React | typeof ReactJSX,
+		createElement: React17["createElement"] | (typeof ReactJSX)["jsx"] | (typeof ReactJSX)["jsxs"],
+		react: React17 | typeof ReactJSX,
 		args:
-			| Parameters<(typeof React)["createElement"]>
+			| Parameters<React17["createElement"]>
 			| Parameters<(typeof ReactJSX)["jsx"]>
 			| Parameters<(typeof ReactJSX)["jsxs"]>,
 	) => {
 		const result = Reflect.apply(createElement, react, args) as ReactElement;
 
 		try {
-			logger.debug("createElement", args[1] ?? args[0]);
+			logger.debug("createElement", args);
 			const type = result.type;
 			const proxy = onCreateElement(type, result.props);
 			if (proxy) {
@@ -30,7 +33,7 @@ export function hookReact() {
 		return result;
 	};
 
-	hookFunction(React, "createElement", hookCreateElement);
+	hookFunction(React as React17, "createElement", hookCreateElement);
 	hookFunction(ReactJSX, "jsx", hookCreateElement);
 	hookFunction(ReactJSX, "jsxs", hookCreateElement);
 }
