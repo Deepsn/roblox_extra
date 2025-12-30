@@ -14,7 +14,7 @@ export async function hookWebpack() {
 			hookFunction(modules, id, (target, thisArg, args) => {
 				const result = Reflect.apply(target, thisArg, args);
 				const moduleExports = args[0].exports;
-				logger.debug(`Registered webpack chunk: ${chunkId}:${id}`);
+				logger.debug(`Registered webpack chunk: ${chunkId}:${id}`, moduleExports);
 				mappedModules().set(id, moduleExports);
 				trigger(mappedModules);
 				return result;
