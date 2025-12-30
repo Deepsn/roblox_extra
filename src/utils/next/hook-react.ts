@@ -1,46 +1,39 @@
-import type { ReactElement } from "react-create";
-import type ReactJSX from "react-create/jsx-runtime";
+import { hookFunction } from "@/utils/hook-function";
 import { hookChunk } from "@/utils/next/hook-webpack";
 import { onCreateElement } from "@/utils/react/on-create-element";
+import type { ReactProps } from "@/utils/react/types/hook";
 
 export function hookReact() {
-	const hook = (createElement: (...args: any[]) => ReactElement, react: typeof ReactJSX, args: unknown[]) => {
-		const result = Reflect.apply(createElement, react, args) as ReactElement;
-
+	const hookCreateElement = (createElement: (...args: any[]) => any, react: any, args: any[]) => {
 		try {
-			const type = result.type;
-			const proxy = onCreateElement(type, result.props);
+			const [type, props] = args as [any, ReactProps];
+			const proxy = onCreateElement(type, props);
 
 			if (proxy) {
-				if (typeof type === "function") {
-					result.type = proxy;
-				} else if (typeof type === "object" && type !== null && "render" in type) {
-					(type as { render: typeof result.type }).render = proxy;
-				}
+				args[0] = proxy as any;
 			}
 		} catch (err) {
 			console.error(err);
 		}
 
-		return result;
+		return Reflect.apply(createElement, react, args);
 	};
 
 	// 28538
 	hookChunk(
-		(chunk) => "jsx" in chunk && "jsxs" in chunk,
-		(chunk, id) => {
-			console.log("React JSX chunk", chunk, id);
-			hookFunction(chunk, "jsx", hook);
-			hookFunction(chunk, "jsxs", hook);
+		(chunk) => typeof chunk === "object" && "jsx" in chunk && "jsxs" in chunk,
+		(chunk) => {
+			hookFunction(chunk as any, "jsx", hookCreateElement);
+			hookFunction(chunk as any, "jsxs", hookCreateElement);
 		},
 	);
 
 	// 91733
 	hookChunk(
-		(chunk) => "useState" in chunk && "useCallback" in chunk,
-		(chunk, id) => {
-			console.log("React chunk", chunk, id);
-			window.React = chunk;
+		(chunk) => typeof chunk === "object" && "useState" in chunk && "useCallback" in chunk,
+		(chunk) => {
+			if ("createElement" in (chunk as any)) hookFunction(chunk as any, "createElement", hookCreateElement);
+			window.React = chunk as any;
 		},
 	);
 }
