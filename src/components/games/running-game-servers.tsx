@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/correctness/useHookAtTopLevel: props.type is static and prevents rendering */
+
 import type { ExtendedServerOptions } from "@/components/games/server-list/options";
 import type { ServerCursor, ServerInstance, ServerInstancesResponse } from "@/types/games";
 import { sendMessagesOnInjected } from "@/utils/messaging/injected";
@@ -5,8 +7,8 @@ import type { ServerRegion } from "@/utils/messaging/server-info";
 import type { ConstructorHook } from "@/utils/react/types/hook";
 import { getBestPingServers } from "@/utils/server/filters/best-ping";
 
-export const RunningGameServers: ConstructorHook["callback"] = (target, self, args) => {
-	const [props] = args;
+export const RunningGameServers: ConstructorHook["callback"] = (render, props) => {
+	if (props.type !== "public") return null;
 
 	const lastRequest = useRef<{ data: ServerInstancesResponse }>();
 	const original_getGameServers = useMemo(() => props.getGameServers, []);
@@ -115,7 +117,7 @@ export const RunningGameServers: ConstructorHook["callback"] = (target, self, ar
 	return (
 		<React.Fragment>
 			<SystemFeedback />
-			{Reflect.apply(target, self, args)}
+			{render()}
 		</React.Fragment>
 	);
 };

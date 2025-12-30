@@ -4,7 +4,8 @@ import type { ReactUtilities as _ReactUtilities } from "@/types/react-utilities"
 import type { RobloxThumbnails as _RobloxThumbnails } from "@/types/roblox-thumbnails";
 import type { ConstructorHook } from "@/utils/react/types/hook";
 
-type React = typeof import("react") & typeof import("react-create");
+export type React = typeof import("react") & typeof import("react-create");
+export type ReactJSX = typeof import("react/jsx-runtime") | typeof import("react-create/jsx-runtime");
 
 type ExtractReactHooks<T = React> = {
 	[K in keyof T as K extends `use${string}` ? (T[K] extends (...args: any[]) => any ? K : never) : never]: T[K];
@@ -18,7 +19,7 @@ export declare global {
 		__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: any;
 	};
 
-	const ReactJSX: typeof import("react/jsx-runtime") | typeof import("react-create/jsx-runtime");
+	const ReactJSX: ReactJSX;
 
 	const ReactStyleGuide: _RobloxStyleGuide;
 	const ReactUtilities: _ReactUtilities;

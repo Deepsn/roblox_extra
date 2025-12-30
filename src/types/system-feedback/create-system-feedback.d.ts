@@ -1,3 +1,4 @@
-import type { Dispatch, ReactElement } from "react";
+import type React from "react";
+import type { Dispatch } from "react";
 
-export type createSystemFeedback = () => [() => ReactElement, Dispatch];
+export type createSystemFeedback = () => [() => React.JSX.Element, Dispatch];

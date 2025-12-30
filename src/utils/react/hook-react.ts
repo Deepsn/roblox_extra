@@ -1,7 +1,9 @@
-import type { ReactElement } from "react";
+import type { ElementType, ReactElement } from "react";
+import type { ReactJSX } from "@/types/global-window";
 import { Logger } from "@/utils/helpers/logger";
 import { hookFunction } from "@/utils/hook-function";
 import { onCreateElement } from "@/utils/react/on-create-element";
+import type { ReactProps } from "@/utils/react/types/hook";
 
 const logger = new Logger("ReactHook", "#61DAFB");
 
@@ -10,27 +12,24 @@ type React17 = typeof import("react");
 
 export function hookReact() {
 	const hookCreateElement = (
-		createElement: React17["createElement"] | (typeof ReactJSX)["jsx"] | (typeof ReactJSX)["jsxs"],
-		react: React17 | typeof ReactJSX,
-		args:
-			| Parameters<React17["createElement"]>
-			| Parameters<(typeof ReactJSX)["jsx"]>
-			| Parameters<(typeof ReactJSX)["jsxs"]>,
-	) => {
-		const result = Reflect.apply(createElement, react, args) as ReactElement;
+		createElement: React17["createElement"] | ReactJSX["jsx"] | ReactJSX["jsxs"],
+		react: React17 | ReactJSX,
+		args: Parameters<React17["createElement"]> | Parameters<ReactJSX["jsx"]> | Parameters<ReactJSX["jsxs"]>,
+	): ReactElement => {
+		const [type, props] = args as [ElementType | string, ReactProps];
 
 		try {
 			logger.debug("createElement", args);
-			const type = result.type;
-			const proxy = onCreateElement(type, result.props);
+			const proxy = onCreateElement(type, props as ReactProps);
+
 			if (proxy) {
-				result.type = proxy;
+				args[0] = proxy as ElementType;
 			}
 		} catch (err) {
-			logger.error(err);
+			logger.error(err, typeof type);
 		}
 
-		return result;
+		return Reflect.apply(createElement, react, args);
 	};
 
 	hookFunction(React as React17, "createElement", hookCreateElement);

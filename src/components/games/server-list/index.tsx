@@ -4,8 +4,7 @@ import type { ServerInstance } from "@/types/games";
 import type { ConstructorHook } from "@/utils/react/types/hook";
 import { gameInstanceConstants } from "@/utils/server/constants/resources";
 
-export const ServerListSection: ConstructorHook["callback"] = (...args) => {
-	const [, , [props]] = args;
+export const ServerListSection: ConstructorHook["callback"] = (_, props) => {
 	const {
 		gameInstances,
 		handleGameInstanceShutdownAtIndex,

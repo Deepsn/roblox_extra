@@ -1,16 +1,12 @@
-import type { JSXElementConstructor, ReactElement } from "react";
+import type { ElementType, JSXElementConstructor, ReactElement, ReactNode } from "react";
 import type { ReactProps } from "@/utils/react/types/hook";
 
-const constructorProxies = new Map<any, { [key: string]: any }>();
+const elementCache = new Map<any, any>();
 
-export function onCreateElement(
-	type: string | JSXElementConstructor<any>,
-	props: ReactProps<{ [key: string]: unknown }>,
-) {
+export function onCreateElement(type: ElementType | string, props: ReactProps) {
 	if (!(props instanceof Object)) return;
-	if (props?.internal !== undefined) return;
 
-	let render: ((...args: any[]) => ReactElement | unknown) | JSXElementConstructor<any> | undefined;
+	let render: ((...args: any[]) => ReactElement | ReactNode) | JSXElementConstructor<any> | undefined;
 
 	if (typeof type === "function") {
 		render = type;
@@ -18,45 +14,38 @@ export function onCreateElement(
 		const component = type as object;
 
 		if ("render" in component && typeof component.render === "function") {
-			render = component.render as (...args: any[]) => unknown;
+			render = component.render as (...args: any[]) => ReactElement | ReactNode;
 		} else if ("type" in component && typeof component.type === "function") {
-			render = component.type as (...args: any[]) => unknown;
+			render = component.type as (...args: any[]) => ReactElement | ReactNode;
 		}
 	}
 
 	if (!render) return;
 
-	const hooks = RobloxExtra.ReactRegistry.ConstructorsHooks.filter((hook) => hook.filter(props, render));
+	const hooks = RobloxExtra.ReactRegistry.ConstructorsHooks.filter((hook) => hook.filter(props));
+	if (hooks.length === 0) return;
 
-	let cache = constructorProxies.get(type);
+	const cache = elementCache.get(render);
+	if (cache) return cache as typeof render;
 
-	if (!cache) {
-		cache = {};
-		constructorProxies.set(type, cache);
+	let proxy = render;
+
+	for (const hook of hooks) {
+		proxy = new Proxy(proxy, {
+			apply: (target, self, args) => {
+				const props = args[0] as ReactProps<Record<string, unknown>>;
+				const render = () => Reflect.apply(target, self, args);
+
+				if (!hook.manipulateResult) {
+					const element = render();
+					return hook.callback(element, props) ?? element;
+				}
+
+				return hook.callback(render, props);
+			},
+		});
 	}
 
-	const key = hooks.map((x) => x.index).join("");
-	let proxy = cache[key];
-
-	if (!proxy) {
-		proxy = render;
-
-		for (const hook of hooks) {
-			proxy = new Proxy(proxy, {
-				apply: (target, self, args) => {
-					let result = [target, self, args];
-
-					if (!hook.manipulateResult) {
-						result = [Reflect.apply(target, self, args), ...args];
-					}
-
-					return hook.callback(...result) ?? (hook.manipulateResult ? Reflect.apply(target, self, args) : result[0]);
-				},
-			});
-		}
-
-		cache[key] = proxy;
-	}
-
+	elementCache.set(render, proxy);
 	return proxy;
 }
