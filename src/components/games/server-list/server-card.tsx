@@ -3,6 +3,7 @@ import { PlayerThumbnailContainer } from "@/components/player-thumbnail-containe
 import { useAsyncEffect } from "@/hooks/use-async-effect";
 import { sendMessagesOnInjected } from "@/utils/messaging/injected";
 import type { ServerRegion } from "@/utils/messaging/server-info";
+import { gameInstanceConstants } from "@/utils/server/constants/resources";
 import ContentCopyIcon from "~/assets/icons/content_copy.svg";
 
 export function ServerCard({
@@ -71,7 +72,7 @@ export function ServerCard({
 					style={{
 						display: "flex",
 						justifyContent: "space-between",
-						alignItems: "flex-start",
+						alignItems: "center",
 						fontSize: "12px",
 						lineHeight: "1.2",
 					}}
@@ -92,10 +93,16 @@ export function ServerCard({
 								{ping} ms
 							</span>
 						)}
-						{fps !== undefined && (
-							<span className="text-secondary" title="Server FPS">
-								{Math.round(fps)} FPS
-							</span>
+						{fps !== undefined && fps <= gameInstanceConstants.slowGameFpsThreshold && (
+							<Tooltip
+								containerClassName={null}
+								content={`Server is running at a low framerate (${Math.floor(fps)} FPS)`}
+								placement="top"
+							>
+								<span className="text-secondary" style={{ color: "#FACE68" }}>
+									Slow game
+								</span>
+							</Tooltip>
 						)}
 					</div>
 				</div>
