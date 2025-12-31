@@ -113,7 +113,7 @@ export const ServerListSection: ConstructorHook["callback"] = (_, props) => {
 
 							return (
 								<ServerCard
-									key={instanceId}
+									key={instanceId ?? vipServerId}
 									{...{
 										accessCode,
 										canManagePlace: userCanManagePlace,
