@@ -33,7 +33,7 @@ export function ServerCard({
 	[key: string]: any;
 }) {
 	const { Tooltip } = ReactStyleGuide;
-	const [serverRegion, setServerRegion] = useState<ServerRegion>();
+	const [serverRegion, setServerRegion] = useState<ServerRegion | "">();
 
 	function handleServerJoin() {
 		Roblox.GameLauncher.joinGameInstance(placeId, id);
@@ -44,13 +44,18 @@ export function ServerCard({
 	}
 
 	useAsyncEffect(async () => {
+		if (id === undefined || placeId === undefined) {
+			setServerRegion("");
+			return;
+		}
+
 		const serverRegion = await sendMessagesOnInjected("getServerRegion", {
 			placeId: placeId,
 			gameId: id,
 		});
 
 		setServerRegion(serverRegion);
-	}, []);
+	}, [id, placeId]);
 
 	const percent = Math.round((currentPlayersCount / maxPlayers) * 100);
 	const remainingPlayersText = currentPlayersCount - players.length > 0 && `+${currentPlayersCount - players.length}`;
@@ -78,10 +83,12 @@ export function ServerCard({
 					}}
 				>
 					<div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-						{serverRegion ? (
-							<span className="text-secondary" style={{ fontWeight: 600 }}>
-								{serverRegion.location}, {serverRegion.country}
-							</span>
+						{serverRegion !== undefined ? (
+							serverRegion !== "" && (
+								<span className="text-secondary" style={{ fontWeight: 600 }}>
+									{serverRegion.location}, {serverRegion.country}
+								</span>
+							)
 						) : (
 							<span className="text-secondary">Loading region...</span>
 						)}
