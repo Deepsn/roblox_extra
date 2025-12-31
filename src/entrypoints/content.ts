@@ -1,5 +1,6 @@
 import type { ScriptPublicPath } from "wxt/utils/inject-script";
 import { Logger } from "@/utils/helpers/logger";
+import { getUrl } from "@/utils/helpers/url";
 
 const logger = new Logger("Injector", "#6eafdbff");
 
@@ -11,12 +12,7 @@ export default defineContentScript({
 		const manifest = browser.runtime.getManifest();
 		const webAccessibleResources = manifest.web_accessible_resources ?? [];
 
-		const pathname = window.location.pathname.split("/")[1].trim();
-		let hostname = window.location.hostname.split(".")[0].trim();
-
-		if (hostname === "www") {
-			hostname = "";
-		}
+		const { pathname, hostname, locale } = getUrl();
 
 		const inject = async (path: ScriptPublicPath | string) => {
 			const found = webAccessibleResources.some((resource) => {
@@ -39,11 +35,11 @@ export default defineContentScript({
 		const injectall = Promise.all([
 			inject("route-all.js"),
 			hostname !== "" ? inject(`route-${hostname}-all.js`) : undefined,
-			pathname !== "" ? inject(`route${hostname !== "" ? "-" : ""}${hostname}-${pathname}.js`) : undefined,
+			pathname !== "" ? inject(`route${hostname ? `-${hostname}` : ""}-${pathname}.js`) : undefined,
 		]);
 
 		await injectall;
 
-		logger.log("injected\n", `hostname: "${hostname}"\n`, `pathname: "${pathname}"`);
+		logger.log("injected\n", `hostname: "${hostname ?? ""}"\n`, `pathname: "${pathname}"\n`, `locale: "${locale}"`);
 	},
 });
