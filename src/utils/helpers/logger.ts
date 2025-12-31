@@ -1,7 +1,41 @@
 /** biome-ignore-all lint/suspicious/useAdjacentOverloadSignatures: biome bugs out on static methods */
 
 export function lockConsole() {
-	Object.freeze(console);
+	const prevLog = console.log;
+	const prevInfo = console.info;
+	const prevWarn = console.warn;
+	const prevError = console.error;
+	const prevDebug = console.debug;
+
+	const noop = () => {};
+	const props = {
+		configurable: true,
+		enumerable: true,
+		set: noop,
+	};
+
+	Object.defineProperties(console, {
+		log: {
+			...props,
+			get: () => prevLog,
+		},
+		info: {
+			...props,
+			get: () => prevInfo,
+		},
+		warn: {
+			...props,
+			get: () => prevWarn,
+		},
+		error: {
+			...props,
+			get: () => prevError,
+		},
+		debug: {
+			...props,
+			get: () => prevDebug,
+		},
+	});
 }
 
 export class Logger {
